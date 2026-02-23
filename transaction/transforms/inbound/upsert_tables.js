@@ -1,4 +1,4 @@
-import { getEntryTypeId, getTimelineEntryUUID } from '@engine9-io/input-tools';
+import { getEntryTypeId, getTimelineEntryUUID } from '@engine9/input-tools';
 /* appends a recurring int if recurs is specified */
 function appendRecursId(d) {
   if (d.recurs_id !== undefined) return d;

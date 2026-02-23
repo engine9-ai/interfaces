@@ -72,6 +72,17 @@ export const tables = [
     indexes: [{ columns: ['message_id'], unique: true }]
   },
   {
+    name: 'message_override',
+    columns: {
+      id: 'id',
+      message_id: 'foreign_uuid',
+      overrides: 'json',
+      created_at: 'created_at',
+      modified_at: 'modified_at'
+    },
+    indexes: [{ columns: ['message_id'], unique: true }]
+  },
+  {
     name: 'message_statistics',
     columns: {
       id: 'id',

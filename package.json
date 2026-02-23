@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@engine9-io/input-tools": "^2.0.4",
+    "@engine9/input-tools": "^2.0.4",
     "handlebars": "^4.7.8"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 export const bindings = {
   tablesToUpsert: { path: 'sql.tables.upsert' },
-  uuidIsValid: { path: '@engine9-io/input-tools:uuidIsValid' }
+  uuidIsValid: { path: '@engine9/input-tools:uuidIsValid' }
 };
 export async function transform({ batch, tablesToUpsert, uuidIsValid, options }) {
   const { segmentIds } = options;
