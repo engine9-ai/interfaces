@@ -1,5 +1,5 @@
 const metadata = {
-  name: '@engine9-io/interfaces/report',
+  name: '@engine9/interfaces/report',
   version: '1.0.0'
 };
 export { metadata };

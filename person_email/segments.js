@@ -3,7 +3,7 @@ export const subscribers = {
   search: {
     and: [
       {
-        path: 'local$@engine9-io/interfaces/person_email:search:emails',
+        path: 'local$@engine9/interfaces/person_email:search:emails',
         options: {
           subscriptionStatus: 'Subscribed'
         }

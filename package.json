@@ -1,5 +1,5 @@
 {
-  "name": "@engine9-io/interfaces",
+  "name": "@engine9/interfaces",
   "version": "1.6.0",
   "type": "module",
   "description": "Engine9 core interfaces",

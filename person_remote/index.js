@@ -2,10 +2,10 @@ import schema from './schema.js';
 import metrics from './metrics.js';
 import id from './transforms/inbound/extract_identifiers.js';
 const metadata = {
-  name: '@engine9-io/interfaces/person_remote',
+  name: '@engine9/interfaces/person_remote',
   version: '1.0.0',
   dependencies: {
-    '@engine9-io/interfaces/person': '>1.0.0'
+    '@engine9/interfaces/person': '>1.0.0'
   }
 };
 export const search = {

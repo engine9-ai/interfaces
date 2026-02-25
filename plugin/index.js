@@ -1,6 +1,6 @@
 import schema from './schema.js';
 const metadata = {
-  name: '@engine9-io/interfaces/plugin',
+  name: '@engine9/interfaces/plugin',
   version: '1.0.0'
 };
 export { metadata };
