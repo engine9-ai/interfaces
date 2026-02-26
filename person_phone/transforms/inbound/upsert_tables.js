@@ -24,9 +24,10 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
       if (!o.sms_status) o.sms_status = 'Unsubscribed';
     }
     const sms_status = o.sms_status || personPhones[0]?.sms_status || 'Subscribed';
+    const phone_type = o.phone_type || personPhones[0]?.phone_type || 'Personal';
 
-    if (o.call_status!==undefined && !o.call_status) o.call_status='Not Subscribed';
-    
+    if (o.call_status !== undefined && !o.call_status) o.call_status = 'Not Subscribed';
+
     const { id, ...rest } = o;
     if (id) {
       //this is undoubtedly NOT the ID of the record
@@ -35,7 +36,8 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
       tablesToUpsert.person_phone.push({
         ...personPhones[0],
         ...rest,
-        sms_status
+        sms_status,
+        phone_type
       });
     } else {
       tablesToUpsert.person_phone.push({
@@ -44,7 +46,8 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
         phone: o.phone,
         ...rest,
         source_input_id: o.input_id,
-        sms_status
+        sms_status,
+        phone_type
       });
     }
   });
