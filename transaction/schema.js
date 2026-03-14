@@ -27,13 +27,16 @@ export const tables = [
       recommended_message_id: 'uuid',
       override_message_id: 'uuid',
       final_message_id: 'uuid',
-      extra: 'json'
+      extra: 'json',
+      created_at: 'created_at',
+      modified_at: 'modified_at'
     },
     indexes: [
       { columns: 'id', primary: true },
       { columns: 'ts' },
       { columns: 'person_id' },
-      { columns: 'remote_entry_id' }
+      { columns: 'remote_entry_id' },
+      { columns: 'modified_at' }
     ]
   }
 ];
