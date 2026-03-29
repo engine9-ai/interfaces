@@ -1,16 +1,19 @@
 const SEGMENT_SEARCH_PATH = 'local$@engine9/interfaces/channels/email:search:emailEngagement';
 
 /**
- * MySQL EQL: message rows published in the last 90 days on the email channel.
- * `message.id` is the input_id used when the message is loaded as an input.
+ * EQL over the message table: rows published in the last 90 days on the email channel.
+ * `message.id` is the input_id used when the message is loaded as an input; stores are scanned for timeline parquet.
  */
 export const universeEmailPublished90d = {
-  table: 'message',
-  columns: [{ column: 'id', name: 'input_id' }],
-  conditions: [
-    { eql: `channel='email'` },
-    { eql: `publish_date >= date_sub(now(), interval 90 day)` }
-  ]
+  type: 'inputs',
+  eql: {
+    table: 'message',
+    columns: [{ column: 'id', name: 'input_id' }],
+    conditions: [
+      { eql: `channel='email'` },
+      { eql: `publish_date >= date_sub(now(), interval 90 day)` }
+    ]
+  }
 };
 
 /** Materialized membership table: person_segment_<table_prefix>_<segment_name> (trailing _ on prefix trimmed to avoid __). */
