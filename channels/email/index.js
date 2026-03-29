@@ -13,25 +13,6 @@ const metadata = {
   segmentRemotePrefix: 'channels_email:interface:'
 };
 
-/**
- * Segment search runs against the messaging/timeline plugin, not this interface row.
- * Used by SchemaWorker.install when deploying all `segments` entries to the `segment` table.
- */
-export async function resolveSegmentPluginId({ sqlWorker }) {
-  const tryPaths = [
-    'engine9-testing/sql-plugin-timeline',
-    '@engine9-testing/sql-plugin-timeline',
-    '@engine9/plugins/e9email'
-  ];
-  for (const p of tryPaths) {
-    const {
-      data: [{ id } = {}]
-    } = await sqlWorker.query({ sql: 'select id from plugin where path = ? limit 1', values: [p] });
-    if (id) return id;
-  }
-  return null;
-}
-
 export { metadata };
 export { search };
 export { segments };
@@ -42,6 +23,5 @@ export default {
   search,
   segments,
   personSegmentTableName,
-  universeEmailPublished90d,
-  resolveSegmentPluginId
+  universeEmailPublished90d
 };

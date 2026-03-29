@@ -14,6 +14,10 @@ Engine9 splits shared data contracts (**interfaces**) from deployable integratio
 
 ## Interface package (`@engine9/interfaces/<name>`)
 
+**Deploy once:** The server treats every `@engine9/interfaces/*` path as **unique** (one `plugin` row per account). You cannot turn that off from interface metadata. Native plugins may still allow multiple instances per path unless their metadata sets `unique: true`.
+
+**Exports:** Only expose the standard feature modules below (and the default aggregate object). Do **not** export non-standard helpers meant only for the server (for example custom `resolveSegmentPluginId`–style functions). If an interface needs special install behavior, it belongs in server code keyed by `plugin.path`, not in the published interface API.
+
 Typical layout:
 
 - `index.js` — exports `metadata`, optional `schema`, `transforms`, `search`, `segments`, `metrics`, `reports`, default aggregate object.
@@ -148,9 +152,11 @@ Reference: `segment/search.js` (`segment` handler).
 
 ### 9. Segments — saved audience presets
 
-Export keyed definitions: `name`, optional `search` tree (`and` / paths / table+columns). Paths use `local$@engine9/interfaces/...:search:<handler>`.
+Export keyed definitions: `name`, optional **`universe`** (array of MySQL EQL objects whose rows yield `input_id` values), optional `search` tree (`and` / paths / table+columns). Paths use `local$@engine9/interfaces/...:search:<handler>`.
 
-Reference: `person_email/segments.js`, `transaction/segments.js`.
+The deployed `segment.plugin_id` identifies the **owning** package (often the interface). It does not have to match every plugin that supplies data: the **universe** narrows which inputs (possibly across plugins) feed timeline files for the build. Optional empty `pluginId` in search options keeps handlers universe-scoped; set it only when the search handler should filter by a specific data plugin.
+
+Reference: `person_email/segments.js`, `transaction/segments.js`, `channels/email/segments.js` (`universe` + engagement search).
 
 ### 10. Metrics — aggregate cards
 
@@ -251,6 +257,7 @@ Server resolution maps `local$@engine9/...` to the checked-out `interfaces/` or 
 
 ## Checklist
 
+- [ ] Interface `index.js` exposes only the standard exports (no server-only hooks or extra named APIs).
 - [ ] `metadata.name` matches package scope (`@engine9/interfaces/...` or display name for native).
 - [ ] `dependencies` declare other interfaces/schemas required at deploy time.
 - [ ] `schema.js` indexes cover join/filter columns; primary keys set where needed.

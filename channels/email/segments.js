@@ -40,7 +40,7 @@ function emailEngagementSegment(name, windowDays, timelineEntryType) {
   };
 }
 
-/** Rolling windows; set `pluginId` to the messaging plugin UUID before running the segment. */
+/** Rolling windows; leave `pluginId` empty so timeline scope follows the segment `universe` (message input ids). */
 export const openers_30d = emailEngagementSegment('30-day email openers', 30, 'EMAIL_OPEN');
 export const openers_60d = emailEngagementSegment('60-day email openers', 60, 'EMAIL_OPEN');
 export const openers_90d = emailEngagementSegment('90-day email openers', 90, 'EMAIL_OPEN');
