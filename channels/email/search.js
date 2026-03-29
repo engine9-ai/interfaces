@@ -1,5 +1,15 @@
 import { TIMELINE_ENTRY_TYPES } from '@engine9/input-tools';
 
+/**
+ * Build EQL for email engagement (opens / clicks) within a rolling window.
+ *
+ * The search always joins `timeline` → `input` on `timeline.input_id = input.id`.
+ * During a segment build the DuckDB `input` table is populated exclusively with
+ * the input ids discovered by the segment's `universe` entry (e.g.
+ * `universeEmailPublished90d`), so the join scopes results to the universe even
+ * when no explicit `pluginId` is provided.  When `pluginId` IS set, an additional
+ * `input.plugin_id` filter is applied.
+ */
 function buildEmailEngagementEql({ pluginId, windowDays, timelineEntryType }) {
   const typeId = TIMELINE_ENTRY_TYPES[timelineEntryType];
   if (typeof typeId !== 'number') {
@@ -16,22 +26,19 @@ function buildEmailEngagementEql({ pluginId, windowDays, timelineEntryType }) {
         ? 'email click'
         : timelineEntryType;
   const hasPlugin = pluginId != null && String(pluginId).trim() !== '';
-  if (!hasPlugin) {
-    return {
-      text: `Has a ${label} in the last ${days} days`,
-      eql: {
-        table: 'timeline',
-        columns: ['person_id'],
-        conditions: [
-          { eql: `timeline.entry_type_id=${typeId}` },
-          { eql: `timeline.ts >= date_sub(now(), interval ${days} day)` }
-        ]
-      }
-    };
+  const conditions = [
+    { eql: `timeline.entry_type_id=${typeId}` },
+    { eql: `timeline.ts >= date_sub(now(), interval ${days} day)` }
+  ];
+  if (hasPlugin) {
+    const safePluginId = String(pluginId).replace(/'/g, "''");
+    conditions.push({ eql: `input.plugin_id='${safePluginId}'` });
   }
-  const safePluginId = String(pluginId).replace(/'/g, "''");
+  const text = hasPlugin
+    ? `Has a ${label} from plugin ${String(pluginId)} in the last ${days} days`
+    : `Has a ${label} in the last ${days} days (scoped to universe inputs)`;
   return {
-    text: `Has a ${label} from plugin ${safePluginId} in the last ${days} days`,
+    text,
     eql: {
       table: 'timeline',
       joins: [
@@ -41,11 +48,7 @@ function buildEmailEngagementEql({ pluginId, windowDays, timelineEntryType }) {
         }
       ],
       columns: ['person_id'],
-      conditions: [
-        { eql: `timeline.entry_type_id=${typeId}` },
-        { eql: `input.plugin_id='${safePluginId}'` },
-        { eql: `timeline.ts >= date_sub(now(), interval ${days} day)` }
-      ]
+      conditions
     }
   };
 }
