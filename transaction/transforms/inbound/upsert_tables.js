@@ -33,13 +33,13 @@ export const bindings = {
   tablesToUpsert: { path: 'sql.tables.upsert' }
 };
 export async function transform(opts) {
-  const { batch, tablesToUpsert } = opts;
+  const { batch, tablesToUpsert, pluginId } = opts;
   if (batch.length === 0) return;
   tablesToUpsert.transaction = tablesToUpsert.transaction || [];
   batch.forEach((o) => {
     appendRecursId(o);
     o.entry_type_id = getEntryTypeId(o);
-    o.id = getTimelineEntryUUID(o);
+    o.id = getTimelineEntryUUID(o, { defaults: { plugin_id: pluginId } });
     tablesToUpsert.transaction.push(o);
   });
 }
