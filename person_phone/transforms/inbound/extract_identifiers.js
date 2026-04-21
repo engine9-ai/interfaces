@@ -3,11 +3,17 @@ const { createHash } = nodecrypto;
 export const type = 'id';
 export async function transform({ batch }) {
   const ids = [];
-  batch.forEach((e) => {
-    e.identifiers = e.identifiers || [];
-    if (e.phone) {
+  batch.forEach((o) => {
+    o.identifiers = o.identifiers || [];
+    //Different naming of the column
+    //phone takes priority, but if that's not specified, go through other common ones
+    if (!o.phone && (o.cell || o.mobile || o.mobile_phone)) {
+      o.phone = o.cell || o.mobile || o.mobile_phone;
+      o.phone_type = o.phone_type || 'Cell';
+    }
+    if (o.phone) {
       // clean and add a plus
-      let phone = e.phone.replace(/[^0-9+]*/g, '').trim();
+      let phone = o.phone.replace(/[^0-9+]*/g, '').trim();
       // clean us based phones.  If it's already prefixed with '+' then assume
       // it's intentional
       if (phone.indexOf('+') < 0) {
@@ -18,18 +24,18 @@ export async function transform({ batch }) {
       // it's basically a shared id hashing setup, so a secret will be exposed anyhow
       const value = createHash('sha256').update(phone).digest('hex');
       // Push all identifiers, later in the pipeline the priority will be determined
-      e.identifiers.push({
+      o.identifiers.push({
         path: 'person_phone',
         type: 'phone_hash_v1',
         value
       });
-      e.phone = phone;
-      e.phone_hash_v1 = value;
-    } else if (e.phone_hash_v1) {
-      e.identifiers.push({
+      o.phone = phone;
+      o.phone_hash_v1 = value;
+    } else if (o.phone_hash_v1) {
+      o.identifiers.push({
         path: 'person_phone',
         type: 'phone_hash_v1',
-        value: e.phone_hash_v1
+        value: o.phone_hash_v1
       });
     }
   });

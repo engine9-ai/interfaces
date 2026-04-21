@@ -1,5 +1,6 @@
 import schema from './schema.js';
 import upsert from './transforms/inbound/upsert_tables.js';
+import normalizeFieldNames from './transforms/inbound/normalize_field_names.js';
 import simpleMap from './transforms/simpleMap.js';
 import appendName from './transforms/outbound/appendName.js';
 import metrics from './metrics.js';
@@ -9,6 +10,7 @@ const metadata = {
   schemas: ['schema.js']
 };
 const transforms = {
+  normalizeFieldNames,
   upsert,
   simpleMap,
   appendName
