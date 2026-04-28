@@ -1,0 +1,60 @@
+{
+  menu: {
+    'data-menu': {
+      title: 'Data',
+      icon: 'data',
+      type: 'collapse',
+      children: {
+        task: {
+          title: 'Tasks',
+          icon: 'forklift',
+          url: '/task'
+        }
+      }
+    }
+  },
+  routes: {
+    task: {
+      layout: 'full_width',
+      components: {
+        header: ['Tasks'],
+        main: [
+          {
+            component: 'RecordTable',
+            properties: {
+              table: 'task_run',
+              columns: [
+                { title: 'Id', dataIndex: 'id', sorter: true, width: '24%' },
+                { title: 'Created', dataIndex: 'created_at', sorter: true, width: '18%' },
+                { title: 'State', dataIndex: 'state_type', sorter: true, width: '14%' },
+                { title: 'Task Key', dataIndex: 'task_key', sorter: true, width: '22%' },
+                { title: 'Flow Run', dataIndex: 'flow_run_id', sorter: true, width: '22%' }
+              ],
+              onRecord: {
+                onClick: {
+                  action: 'navigate',
+                  url: '/task/{{record.id}}'
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    'task/:id/*': {
+      layout: 'full_width',
+      components: {
+        main: [
+          {
+            component: 'RecordForm',
+            properties: {
+              table: 'task_run',
+              title: 'Task Run {{record.id}}',
+              readOnly: true
+            }
+          }
+        ]
+      }
+    }
+  }
+}

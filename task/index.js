@@ -1,7 +1,7 @@
 import schema from './schema.js';
 
 const metadata = {
-  name: '@engine9/interfaces/job',
+  name: '@engine9/interfaces/task',
   version: '1.0.0',
   schemas: ['schema.js']
 };
