@@ -36,6 +36,10 @@ export async function transform(opts) {
   const { batch, tablesToUpsert, pluginId } = opts;
   if (batch.length === 0) return;
   tablesToUpsert.transaction = tablesToUpsert.transaction || [];
+  const hasRecurs = batch.some((b) => b.recurs !== undefined || b.recurs_id !== undefined);
+  if (hasRecurs) {
+    batch.forEach((b) => (b.recurs_id = b.recurs_id || 0));
+  }
   batch.forEach((o) => {
     appendRecursId(o);
     o.entry_type_id = getEntryTypeId(o);
