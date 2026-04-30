@@ -63,7 +63,20 @@ export async function transform(props) {
     if (status === 'Unsubscribed') {
       matchingEmails.forEach((original) => {
         if (original.subscription_status !== 'Unsubscribed)') {
-          tablesToUpsert.person_email.push({ ...original, subscription_status: 'Unsubscribed', original });
+          let updatedRecord = {};
+          //this is to make sure the keys match
+          Object.keys(rest).forEach((k) => {
+            updatedRecord[k] = original[k] || null;
+          });
+          Object.assign(updatedRecord, {
+            id: original.id,
+            person_id: original.person_id,
+            email,
+            subscription_status: 'Unsubscribed',
+            //make sure this doesn't change
+            source_input_id: original.source_input_id
+          });
+          tablesToUpsert.person_email.push(updatedRecord);
         }
       });
       tablesToUpsert.person_email
