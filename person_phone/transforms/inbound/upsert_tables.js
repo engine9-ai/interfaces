@@ -33,18 +33,23 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
       //this is undoubtedly NOT the ID of the record
     }
     if (personPhones[0]) {
+      if (!personPhones[0].source_input_id)
+        throw new Error('Invalid source_input_id for existing person_phone record:' + JSON.stringify(personPhones[0]));
       tablesToUpsert.person_phone.push({
-        ...personPhones[0],
         ...rest,
+        id: personPhones[0].id,
+        person_id: personPhones[0].person_id,
+        phone: personPhones[0].phone,
+        source_input_id: personPhones[0].source_input_id,
         sms_status,
         phone_type
       });
     } else {
       tablesToUpsert.person_phone.push({
+        ...rest,
         id: null,
         person_id: o.person_id,
         phone: o.phone,
-        ...rest,
         source_input_id: o.input_id,
         sms_status,
         phone_type
