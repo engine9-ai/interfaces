@@ -38,19 +38,23 @@ export async function transform(props) {
       // if it's explicitly specified, then update it, otherwise set it to what it was before
       status = status || personEmails[0].subscription_status;
       tablesToUpsert.person_email.push({
-        ...personEmails[0],
         ...rest,
+        id: personEmails[0].id,
+        person_id: personEmails[0].person_id,
+        email,
         subscription_status: status,
-        original: personEmails[0]
+        //make sure this doesn't change
+        source_input_id: personEmails[0].source_input_id
+        //original: personEmails[0]
       });
     } else {
       status = status || 'Subscribed'; // Default subscribed
       tablesToUpsert.person_email.push({
+        ...rest,
         id: null,
         person_id: o.person_id,
         email,
         subscription_status: status,
-        ...rest,
         source_input_id: o.input_id
       });
     }
