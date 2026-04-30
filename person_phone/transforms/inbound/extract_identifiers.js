@@ -3,6 +3,7 @@ const { createHash } = nodecrypto;
 export const type = 'id';
 export async function transform({ batch }) {
   const ids = [];
+  let hasPhoneHash = false;
   batch.forEach((o) => {
     o.identifiers = o.identifiers || [];
     //Different naming of the column
@@ -31,14 +32,17 @@ export async function transform({ batch }) {
       });
       o.phone = phone;
       o.phone_hash_v1 = value;
+      hasPhoneHash = true;
     } else if (o.phone_hash_v1) {
       o.identifiers.push({
         path: 'person_phone',
         type: 'phone_hash_v1',
         value: o.phone_hash_v1
       });
+      hasPhoneHash = true;
     }
   });
+  if (hasPhoneHash) batch.forEach((d) => (d.phone_hash_v1 = d.phone_hash_v1 || null));
   return ids;
 }
 export default {
