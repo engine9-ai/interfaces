@@ -1,3 +1,5 @@
+import { relativeDate, isValidDate } from '@engine9/input-tools';
+
 export const all = {
   form: {
     title: 'Transactions',
@@ -5,16 +7,40 @@ export const all = {
     properties: {
       pluginId: {
         type: 'string'
+      },
+      start: {
+        title: 'Start',
+        type: 'string',
+        description:
+          "Optional; only include rows with ts >= start. Parsed with relativeDate; supports ISO datetimes or relative expressions like '-30d'."
+      },
+      end: {
+        title: 'End',
+        type: 'string',
+        description:
+          'Optional; only include rows with ts < end (exclusive upper bound). Parsed with relativeDate; supports ISO datetimes or relative expressions.'
       }
     }
   },
   optionsToEQL: (options) => {
-    const { pluginId } = options;
+    const { pluginId, start, end } = options;
     const conditions = [];
     let text = 'Has any transactions';
     if (pluginId) {
       conditions.push(`input.plugin_id='${pluginId}'`);
       text += ` from plugin ${pluginId}`;
+    }
+    if (start) {
+      const s = relativeDate(start);
+      if (!isValidDate(s)) throw new Error('Invalid start: ' + start);
+      conditions.push(`transaction.ts>='${s.toISOString()}'`);
+      text += ` with ts >= ${s.toISOString()}`;
+    }
+    if (end) {
+      const e = relativeDate(end);
+      if (!isValidDate(e)) throw new Error('Invalid end: ' + end);
+      conditions.push(`transaction.ts<'${e.toISOString()}'`);
+      text += ` with ts < ${e.toISOString()}`;
     }
     return {
       text,
