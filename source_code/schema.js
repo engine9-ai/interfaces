@@ -12,7 +12,7 @@ export const tables = [
       format: 'string',
       format_regex: 'string',
       source_code_channel: 'string',
-      source_code_last_used: 'timestamp',
+      source_code_last_used: 'created_at', //by default, when this record is created it needs a last used.
       parsing: 'json',
       created_at: 'created_at',
       modified_at: 'modified_at'
