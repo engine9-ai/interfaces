@@ -27,15 +27,14 @@ export const bindings = {
 export const transform = (opts) => {
   const { batch, remoteIds, options = {} } = opts;
   const { pluginId, pluginIds, outputField = 'remote_person_id' } = options;
-  const orderedPluginIds =
-    pluginIds && pluginIds.length > 0 ? pluginIds : pluginId ? [pluginId] : [];
+  const orderedPluginIds = pluginIds && pluginIds.length > 0 ? pluginIds : pluginId ? [pluginId] : [];
   if (orderedPluginIds.length === 0) {
     throw new Error('appendRemotePersonId requires options.pluginId or options.pluginIds');
   }
   const byPerson = {};
   for (const b of remoteIds) {
     if (!orderedPluginIds.includes(b.plugin_id)) continue;
-    const v = b.id_value.split('.').pop();
+    const v = b.id_value.split('.').slice(1).join('.');
     if (!byPerson[b.person_id]) byPerson[b.person_id] = {};
     if (!byPerson[b.person_id][b.plugin_id]) byPerson[b.person_id][b.plugin_id] = v;
   }

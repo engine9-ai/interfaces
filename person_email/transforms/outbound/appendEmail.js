@@ -14,7 +14,7 @@ export const bindings = {
 };
 export const transform = ({ batch, emails, options = {} }) => {
   const { subscriptionStatus } = options;
-  let filter = () => {};
+  let filter = () => true;
   if (subscriptionStatus) filter = (d) => d.subscription_status === subscriptionStatus;
   const emailMap = emails.filter(filter).reduce((a, b) => {
     a[b.person_id] = a[b.person_id] || b.email;
