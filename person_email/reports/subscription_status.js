@@ -17,6 +17,7 @@ const o = {
           { eql: `sum(case when subscription_status='Subscribed' then 1 else 0 end)`, name: 'Subscribed' },
           `sum(case when subscription_status='Unsubscribed' then 1 else 0 end) as Unsubscribed`,
           `sum(case when subscription_status='Bouncing' then 1 else 0 end) as Bouncing`,
+          `sum(case when subscription_status='Spam' then 1 else 0 end) as Spam`,
           {
             eql: `sum(case when subscription_status='Not Subscribed' then 1 else 0 end)`,
             name: 'Unknown Subscription'

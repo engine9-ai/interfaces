@@ -9,7 +9,7 @@ export const emails = {
         },
         subscriptionStatus: {
           type: 'string',
-          enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing']
+          enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing', 'Spam']
         }
       },
       required: []

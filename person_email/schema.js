@@ -15,7 +15,7 @@ export const tables = [
         type: 'string',
         nullable: false,
         default_value: 'Not Subscribed',
-        values: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing']
+        values: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing', 'Spam']
       },
       confirmation_status: {
         type: 'string',
