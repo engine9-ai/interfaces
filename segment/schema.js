@@ -15,12 +15,13 @@ export const tables = [
     columns: {
       id: 'id_uuid',
       plugin_id: 'id_uuid', // can't be null, must have a value
+      submodule: 'string',
       segment_folder_id: 'foreign_uuid',
       remote_segment_id: 'string',
       legacy_id: 'int',
+      name: 'string',
       category: 'string', // A arbitrary type, user facing, not to be used for logic
       definition_path: 'string', // a definition file path, will be used for configuring
-      name: 'string',
       stars: 'int', //number of stars, good for UI organizing
       search: 'json',
       build_type: {
