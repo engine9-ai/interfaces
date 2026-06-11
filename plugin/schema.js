@@ -52,8 +52,8 @@ export const tables = [
       remote_input_id: 'string', // The remote id for this input, unique across the plugin
       remote_input_name: 'string', // The remote name -- a human name for this input -- e.g. Form Name, message name
       input_type: 'string', // Type of input, e.g. message, remote_person, petition, signup_form, advocacy_action, etc
-      min_timeline_ts: 'datetime', // Type of input, e.g. message, petition, signup_form, advocacy_action, etc
-      max_timeline_ts: 'datetime', // Type of input, e.g. message, petition, signup_form, advocacy_action, etc
+      min_timeline_ts: 'datetime',
+      max_timeline_ts: 'datetime',
       metadata: 'json', // other metadata about the input, etc,
       data_path: 'string', // where the source data lives for this input, a directory or a packet
       created_at: 'created_at',
