@@ -37,7 +37,9 @@ export const tables = [
       id: 'id',
       plugin_id: 'foreign_uuid',
       name: 'string',
-      value: 'string'
+      value: 'string',
+      created_at: 'created_at',
+      modified_at: 'modified_at'
     },
     indexes: [
       { columns: 'id', primary: true },
