@@ -67,18 +67,18 @@ function emailEngagementSegment(name, windowDays, timelineEntryType) {
  * segment `universe` (the `input` table join in the search EQL restricts to
  * universe-provided message input ids).
  */
-export const openers_30d = emailEngagementSegment('30-day email openers', 30, 'EMAIL_OPEN');
-export const openers_60d = emailEngagementSegment('60-day email openers', 60, 'EMAIL_OPEN');
-export const openers_90d = emailEngagementSegment('90-day email openers', 90, 'EMAIL_OPEN');
-export const clickers_30d = emailEngagementSegment('30-day email clickers', 30, 'EMAIL_CLICK');
-export const clickers_60d = emailEngagementSegment('60-day email clickers', 60, 'EMAIL_CLICK');
-export const clickers_90d = emailEngagementSegment('90-day email clickers', 90, 'EMAIL_CLICK');
+export const email_openers_30d = emailEngagementSegment('30-day email openers', 30, 'EMAIL_OPEN');
+export const email_openers_60d = emailEngagementSegment('60-day email openers', 60, 'EMAIL_OPEN');
+export const email_openers_90d = emailEngagementSegment('90-day email openers', 90, 'EMAIL_OPEN');
+export const email_clickers_30d = emailEngagementSegment('30-day email clickers', 30, 'EMAIL_CLICK');
+export const email_clickers_60d = emailEngagementSegment('60-day email clickers', 60, 'EMAIL_CLICK');
+export const email_clickers_90d = emailEngagementSegment('90-day email clickers', 90, 'EMAIL_CLICK');
 
 export default {
-  openers_30d,
-  openers_60d,
-  openers_90d,
-  clickers_30d,
-  clickers_60d,
-  clickers_90d
+  email_openers_30d,
+  email_openers_60d,
+  email_openers_90d,
+  email_clickers_30d,
+  email_clickers_60d,
+  email_clickers_90d
 };
