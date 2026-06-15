@@ -5,7 +5,7 @@ export const all = {
     title: 'Transactions',
     type: 'object',
     properties: {
-      pluginId: {
+      plugin_id: {
         type: 'string'
       },
       start: {
@@ -23,12 +23,12 @@ export const all = {
     }
   },
   optionsToEQL: (options) => {
-    const { pluginId, start, end } = options;
+    const { plugin_id, start, end } = options;
     const conditions = [];
     let text = 'Has any transactions';
-    if (pluginId) {
-      conditions.push(`input.plugin_id='${pluginId}'`);
-      text += ` from plugin ${pluginId}`;
+    if (plugin_id) {
+      conditions.push(`input.plugin_id='${plugin_id}'`);
+      text += ` from plugin ${plugin_id}`;
     }
     if (start) {
       const s = relativeDate(start);
