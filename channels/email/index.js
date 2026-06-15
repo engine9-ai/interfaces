@@ -8,9 +8,7 @@ const metadata = {
     '@engine9/interfaces/person': '>1.0.0',
     '@engine9/interfaces/timeline': '>1.0.0',
     '@engine9/interfaces/message': '>1.0.0'
-  },
-  /** Stable prefix for `segment.remote_segment_id` rows (SchemaWorker.deployPluginSegmentRowsFromModule). */
-  segmentRemotePrefix: 'channels_email:interface:'
+  }
 };
 
 export { metadata };
