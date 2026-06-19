@@ -56,7 +56,6 @@ export const tables = [
       input_type: 'string', // Type of input, e.g. message, remote_person, petition, signup_form, advocacy_action, etc
       min_timeline_ts: 'datetime',
       max_timeline_ts: 'datetime',
-      metadata: 'json', // other metadata about the input, etc,
       data_path: 'string', // where the source data lives for this input, a directory or a packet
       created_at: 'created_at',
       modified_at: 'modified_at'
