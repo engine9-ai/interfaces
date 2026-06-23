@@ -10,12 +10,12 @@ export const tables = [
       region: 'string',
       postal_code: { type: 'string', length: 16 },
       country: 'string',
+      email: 'string',
       phone: { type: 'string', length: 24 },
-      clean_phone: 'string',
       employer: 'string',
       occupation: 'string'
     },
-    indexes: [{ columns: ['postal_code'] }, { columns: ['clean_phone'] }]
+    indexes: []
   }
 ];
 
