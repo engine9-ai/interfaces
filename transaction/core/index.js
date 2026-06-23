@@ -8,7 +8,7 @@ const metadata = {
   name: '@engine9/interfaces/transaction/core',
   version: '1.2.0',
   dependencies: {
-    '@engine9/interfaces/person': '>1.0.0'
+    '@engine9/interfaces/person': '>=1.0.0'
   }
 };
 export const transforms = {

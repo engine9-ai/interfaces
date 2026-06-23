@@ -5,9 +5,9 @@ const metadata = {
   name: '@engine9/interfaces/channels/email',
   version: '1.0.0',
   dependencies: {
-    '@engine9/interfaces/person': '>1.0.0',
-    '@engine9/interfaces/timeline': '>1.0.0',
-    '@engine9/interfaces/message': '>1.0.0'
+    '@engine9/interfaces/person': '>=1.0.0',
+    '@engine9/interfaces/timeline': '>=1.0.0',
+    '@engine9/interfaces/message': '>=1.0.0'
   }
 };
 
