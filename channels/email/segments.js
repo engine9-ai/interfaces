@@ -18,12 +18,9 @@ const SEGMENT_SEARCH_PATH = 'local$@engine9/interfaces/channels/email:search:ema
 export const universeEmailPublished90d = {
   type: 'inputs',
   eql: {
-    table: 'message',
+    table: 'global_message',
     columns: [{ column: 'id', name: 'input_id' }],
-    conditions: [
-      { eql: `channel='email'` },
-      { eql: `publish_date >= date_sub(now(), interval 90 day)` }
-    ]
+    conditions: [{ eql: `channel='email'` }, { eql: `publish_date >= date_sub(now(), interval 90 day)` }]
   }
 };
 
