@@ -1,6 +1,7 @@
 import schema from './schema.js';
 import metrics from './metrics.js';
 import id from './transforms/inbound/extract_identifiers.js';
+import upsert from './transforms/inbound/upsert_tables.js';
 import appendRemotePersonId from './transforms/outbound/appendRemotePersonId.js';
 const metadata = {
   name: '@engine9/interfaces/person_remote',
@@ -28,6 +29,7 @@ export const search = {
 };
 export const transforms = {
   id,
+  upsert,
   appendRemotePersonId
 };
 export { metadata };
