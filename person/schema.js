@@ -19,7 +19,7 @@ export const tables = [
         type: 'enum',
         nullable: false,
         default_value: '',
-        values: ['', 'remote_person_id', 'email_hash_v1', 'phone_hash_v1']
+        values: ['', 'remote_person_id', 'email_hash_v1', 'phone_hash_v1', 'delegate']
       },
       id_value: 'id_string'
     },
