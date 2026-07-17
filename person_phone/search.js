@@ -47,7 +47,7 @@ export const phones = {
             ref: { column: 'call_status' }
           },
           {
-            value: { value: smsStatus }
+            value: { value: callStatus }
           }
         ]
       });

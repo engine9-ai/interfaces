@@ -7,11 +7,13 @@ export async function transform({ batch }) {
   let hasPhoneHash = false;
   batch.forEach((o) => {
     o.identifiers = o.identifiers || [];
-    //Different naming of the column
-    //phone takes priority, but if that's not specified, go through other common ones
+    // Prefer mobile_phone / cell aliases when phone is empty
     if (!o.phone && (o.cell || o.mobile || o.mobile_phone)) {
       o.phone = o.cell || o.mobile || o.mobile_phone;
       o.phone_type = o.phone_type || 'Cell';
+    } else if (o.phone && !o.phone_type) {
+      // Bare phone with no type defaults to Home (mobile should already be prioritized upstream)
+      o.phone_type = 'Home';
     }
 
     let phone = (o.phone || '').replace(/[^0-9+]*/g, '').trim();

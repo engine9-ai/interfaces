@@ -23,8 +23,12 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
     ) {
       if (!o.sms_status) o.sms_status = 'Unsubscribed';
     }
-    const sms_status = o.sms_status || personPhones[0]?.sms_status || 'Subscribed';
+    const sms_status = o.sms_status || personPhones[0]?.sms_status || 'Not Subscribed';
     const phone_type = o.phone_type || personPhones[0]?.phone_type || 'Personal';
+    const preference_order =
+      o.preference_order !== undefined && o.preference_order !== null
+        ? o.preference_order
+        : (personPhones[0]?.preference_order ?? 0);
 
     if (o.call_status !== undefined && !o.call_status) o.call_status = 'Not Subscribed';
 
@@ -42,7 +46,8 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
         phone: personPhones[0].phone,
         source_input_id: personPhones[0].source_input_id,
         sms_status,
-        phone_type
+        phone_type,
+        preference_order
       });
     } else {
       tablesToUpsert.person_phone.push({
@@ -52,7 +57,8 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
         phone: o.phone,
         source_input_id: o.input_id,
         sms_status,
-        phone_type
+        phone_type,
+        preference_order
       });
     }
   });
