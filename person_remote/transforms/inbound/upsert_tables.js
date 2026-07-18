@@ -1,9 +1,30 @@
-export const bindings = {
-  databaseRemotes: {
-    path: 'sql.query',
-    options: { table: 'person_remote', lookup: ['remote_person_id'] }
-  },
-  tablesToUpsert: { path: 'sql.tables.upsert' }
+export const bindings = ({ pluginId } = {}) => {
+  if (!pluginId) {
+    throw new Error('pluginId is required for person_remote upsert lookup');
+  }
+  return {
+    databaseRemotes: {
+      path: 'sql.query',
+      options: {
+        table: 'person_remote',
+        columns: ['*'],
+        lookup: ['remote_person_id'],
+        joins: [
+          {
+            table: 'input',
+            join_eql: 'person_remote.source_input_id=input.id'
+          }
+        ],
+        conditions: [
+          {
+            type: 'EQUALS',
+            values: [{ ref: 'input.plugin_id' }, { value: { value: pluginId } }]
+          }
+        ]
+      }
+    },
+    tablesToUpsert: { path: 'sql.tables.upsert' }
+  };
 };
 export const type = 'upsert';
 export async function transform({ batch, databaseRemotes, tablesToUpsert }) {
@@ -12,19 +33,11 @@ export async function transform({ batch, databaseRemotes, tablesToUpsert }) {
     const remotePersonId = String(o.remote_person_id).trim();
     if (!remotePersonId) return;
     tablesToUpsert.person_remote = tablesToUpsert.person_remote || [];
+    // databaseRemotes is already scoped to this plugin_id via the input join
     const matchingRemotes = databaseRemotes.filter((d) => d.remote_person_id === remotePersonId);
     const personRemotes = matchingRemotes.filter((d) => d.person_id === o.person_id);
-    if (personRemotes.length > 1) {
-      const byInput = personRemotes.filter((d) => d.source_input_id === o.input_id);
-      if (byInput.length > 1) {
-        throw new Error(
-          `Cannot update remote person id, there are 2 database entries for person_id ${o.person_id} with remote_person_id ${remotePersonId} and input_id ${o.input_id}`
-        );
-      }
-    }
     const existing =
-      personRemotes.find((d) => d.source_input_id === o.input_id) ||
-      (personRemotes.length === 1 ? personRemotes[0] : null);
+      personRemotes.find((d) => d.source_input_id === o.input_id) || personRemotes[0] || null;
     const { id, ...rest } = o;
     if (id) {
       // this is undoubtedly NOT the ID of the person_remote record

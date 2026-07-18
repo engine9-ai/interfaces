@@ -11,6 +11,7 @@ export const tables = [
     },
     indexes: [
       { columns: 'person_id' },
+      { columns: 'remote_person_id' },
       { columns: ['source_input_id', 'remote_person_id', 'person_id'], unique: true }
     ]
   }
