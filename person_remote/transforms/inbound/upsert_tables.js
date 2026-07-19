@@ -2,6 +2,8 @@ export const bindings = ({ pluginId } = {}) => {
   if (!pluginId) {
     throw new Error('pluginId is required for person_remote upsert lookup');
   }
+  // Raw eql condition — EQUALS+string ref gets an illegal AS alias in WHERE
+  const safePluginId = String(pluginId).replace(/'/g, "''");
   return {
     databaseRemotes: {
       path: 'sql.query',
@@ -15,12 +17,7 @@ export const bindings = ({ pluginId } = {}) => {
             join_eql: 'person_remote.source_input_id=input.id'
           }
         ],
-        conditions: [
-          {
-            type: 'EQUALS',
-            values: [{ ref: 'input.plugin_id' }, { value: { value: pluginId } }]
-          }
-        ]
+        conditions: [{ eql: `input.plugin_id='${safePluginId}'` }]
       }
     },
     tablesToUpsert: { path: 'sql.tables.upsert' }
