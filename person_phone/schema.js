@@ -41,14 +41,6 @@ export const tables = [
         nullable: true,
         description: 'Remote system phone record id when available'
       },
-      sms_subscribed_at: {
-        type: 'datetime',
-        nullable: true
-      },
-      sms_unsubscribed_at: {
-        type: 'datetime',
-        nullable: true
-      },
       phone_hash_v1: 'hash',
       source_input_id: 'foreign_uuid',
       created_at: 'created_at',

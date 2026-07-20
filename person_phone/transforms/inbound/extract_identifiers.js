@@ -2,6 +2,7 @@ import nodecrypto from 'node:crypto';
 const { createHash } = nodecrypto;
 export const type = 'id';
 const blankHash = createHash('sha256').update('').digest('hex');
+const MIN_PHONE_LENGTH = 8;
 export async function transform({ batch }) {
   const ids = [];
   let hasPhoneHash = false;
@@ -18,8 +19,7 @@ export async function transform({ batch }) {
 
     let phone = (o.phone || '').replace(/[^0-9+]*/g, '').trim();
     // clean and add a plus
-    if (phone && phone.length >= 7) {
-      //7 digit phones are the minimum
+    if (phone && phone.length >= MIN_PHONE_LENGTH) {
       // clean us based phones.  If it's already prefixed with '+' then assume
       // it's intentional
       if (phone.indexOf('+') < 0) {
@@ -38,6 +38,9 @@ export async function transform({ batch }) {
       o.phone = phone;
       o.phone_hash_v1 = value;
       hasPhoneHash = true;
+    } else if (phone && phone.length > 0 && phone.length < MIN_PHONE_LENGTH) {
+      o.phone = null;
+      o.phone_hash_v1 = null;
     } else if (o.phone_hash_v1 && o.phone_hash_v1 != blankHash) {
       o.identifiers.push({
         path: 'person_phone',

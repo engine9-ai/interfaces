@@ -1,11 +1,17 @@
 export const type = 'upsert';
+const MIN_PHONE_LENGTH = 8;
+function cleanedPhoneLength(phone) {
+  return String(phone || '')
+    .replace(/[^0-9+]*/g, '')
+    .trim().length;
+}
 export const bindings = {
   tablesToUpsert: { path: 'sql.tables.upsert' },
   databasePhones: { path: 'sql.query', options: { table: 'person_phone', lookup: ['phone'] } }
 };
 export async function transform({ batch, tablesToUpsert, databasePhones }) {
   batch.forEach((o) => {
-    if (!o.phone) return;
+    if (!o.phone || cleanedPhoneLength(o.phone) < MIN_PHONE_LENGTH) return;
     tablesToUpsert.person_phone = tablesToUpsert.person_phone || [];
     // phone should be already cleaned in extract ids
     const matchingPhones = databasePhones.filter((d) => d.phone === o.phone);
