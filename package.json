@@ -1,17 +1,19 @@
 {
   "name": "@engine9/interfaces",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "type": "module",
   "description": "Engine9 core interfaces",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test person_address/normalize.test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@engine9/input-tools": "^2.3.12",
-    "handlebars": "^4.7.8"
+    "@zerodep/address-normalize": "^2.4.10",
+    "handlebars": "^4.7.8",
+    "i18n-iso-countries": "^7.14.0"
   },
   "devDependencies": {
     "eslint": "^9.34.0",
