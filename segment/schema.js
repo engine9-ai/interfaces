@@ -59,7 +59,8 @@ export const tables = [
     columns: {
       id: 'id',
       person_id: 'person_id',
-      segment_id: 'foreign_uuid'
+      segment_id: 'foreign_uuid',
+      modified_at: 'modified_at'
     },
     indexes: [{ columns: 'segment_id,person_id', unique: true }, { columns: 'person_id' }]
   }

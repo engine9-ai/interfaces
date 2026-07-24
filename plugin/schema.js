@@ -22,7 +22,7 @@ export const tables = [
   {
     name: 'plugin_history',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       plugin_id: 'id_uuid', // can't be null, must have a value
       path: 'string',
       deployed_version: 'string',
@@ -34,7 +34,7 @@ export const tables = [
   {
     name: 'setting',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       plugin_id: 'foreign_uuid',
       name: 'string',
       value: 'string',

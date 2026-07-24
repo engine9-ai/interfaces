@@ -13,7 +13,8 @@ export const tables = [
     columns: {
       id: 'id',
       tag_id: 'foreign_uuid',
-      row_id: 'id'
+      row_id: 'id',
+      modified_at: 'modified_at'
     }
   }
 ];

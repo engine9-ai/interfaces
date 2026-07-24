@@ -3,7 +3,7 @@ export const tables = [
     name: 'message',
     columns: {
       id: 'id_uuid',
-      message_set_id: 'foreign_id',
+      message_set_id: 'foreign_uuid',
       channel: 'string',
       name: 'string',
       status: 'string',
@@ -21,8 +21,8 @@ export const tables = [
   {
     name: 'message_set',
     columns: {
-      id: 'id',
-      campaign_id: 'foreign_id',
+      id: 'id_uuid',
+      campaign_id: 'foreign_uuid',
       name: 'string',
       remote_message_set_id: 'string',
       remote_message_set_name: 'string',
@@ -40,12 +40,15 @@ export const tables = [
       created_at: 'created_at',
       modified_at: 'modified_at'
     },
-    indexes: [{ columns: ['campaign_id', 'remote_message_set_id'], unique: true }]
+    indexes: [
+      { columns: 'id', primary: true },
+      { columns: ['campaign_id', 'remote_message_set_id'], unique: true }
+    ]
   },
   {
     name: 'campaign',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       name: 'string',
       channel: 'string',
       plugin_id: 'id_uuid', // can't be null, must have a value
@@ -54,12 +57,15 @@ export const tables = [
       created_at: 'created_at',
       modified_at: 'modified_at'
     },
-    indexes: [{ columns: ['plugin_id', 'remote_campaign_id'], unique: true }]
+    indexes: [
+      { columns: 'id', primary: true },
+      { columns: ['plugin_id', 'remote_campaign_id'], unique: true }
+    ]
   },
   {
     name: 'message_content',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       message_id: 'foreign_uuid',
       content: 'json',
       remote_data: 'json',
@@ -69,41 +75,41 @@ export const tables = [
       created_at: 'created_at',
       modified_at: 'modified_at'
     },
-    indexes: [{ columns: ['message_id'], unique: true }]
+    indexes: [{ columns: 'id', primary: true }, { columns: ['message_id'], unique: true }]
   },
   {
     name: 'message_override',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       message_id: 'foreign_uuid',
       overrides: 'json',
       created_at: 'created_at',
       modified_at: 'modified_at'
     },
-    indexes: [{ columns: ['message_id'], unique: true }]
+    indexes: [{ columns: 'id', primary: true }, { columns: ['message_id'], unique: true }]
   },
   {
     name: 'message_statistics',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       message_id: 'foreign_uuid',
       statistics: 'json',
       created_at: 'created_at',
       modified_at: 'modified_at'
     },
-    indexes: [{ columns: ['message_id'], unique: true }]
+    indexes: [{ columns: 'id', primary: true }, { columns: ['message_id'], unique: true }]
   },
   {
     name: 'message_queue',
     columns: {
-      id: 'id',
+      id: 'id_uuid',
       message_id: 'foreign_uuid',
       publish_metadata: 'json',
       error: 'json',
       created_at: 'created_at',
       modified_at: 'modified_at'
     },
-    indexes: [{ columns: ['message_id'], unique: true }]
+    indexes: [{ columns: 'id', primary: true }, { columns: ['message_id'], unique: true }]
   },
   {
     name: 'message_template',
