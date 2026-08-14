@@ -1,4 +1,4 @@
-const SEGMENT_SEARCH_PATH = 'local$@engine9/interfaces/channels/email:search:emailEngagement';
+const SEGMENT_SEARCH_PATH = '@engine9/interfaces/channels/email:search:emailEngagement';
 
 /**
  * EQL over the message table: rows published in the last 90 days on the email channel.

@@ -1,0 +1,20 @@
+{
+  "name": "@engine9/interfaces/stacks/standard",
+  "description": "Default Engine9 interface stack: person, plaintext email and phone, transactions, and related core tables.",
+  "version": "1.0.0",
+  "unique": true,
+  "include": [
+    "@engine9/interfaces/plugin",
+    "@engine9/interfaces/person",
+    "@engine9/interfaces/person_remote",
+    "@engine9/interfaces/segment",
+    "@engine9/interfaces/person_email",
+    "@engine9/interfaces/person_phone",
+    "@engine9/interfaces/person_address",
+    "@engine9/interfaces/timeline",
+    "@engine9/interfaces/source_code",
+    "@engine9/interfaces/transaction/core",
+    "@engine9/interfaces/transaction/profile"
+  ],
+  "exclude": []
+}
