@@ -4,7 +4,7 @@ Engine9 interfaces are common schemas that are used by a variety of core and plu
 
 ## Conventions
 
-- **Single deployment per path:** Packages under `@engine9/interfaces/*` are always installed at most once per account (`SchemaWorker.install` forces `unique` for that prefix). Multiple rows per path are rejected. Native `@engine9/plugins/*` packages may still have more than one instance when they are not marked unique.
+- **Plugin uniqueness:** `SchemaWorker.install` reuses an existing `plugin` row when the path is unique: `metadata.unique` if set, otherwise `@engine9/interfaces/*` (except `person_custom`, which is `unique: false`). Native plugins that set `unique: true` behave the same. Third-party plugins and `person_custom` may have more than one instance per path; pass `id` to update an existing non-unique row.
 
 - **Public module surface:** Export only the standard building blocks documented in [`skills/create-engine9-plugin/SKILL.md`](../skills/create-engine9-plugin/SKILL.md): for example `metadata`, optional `schema`, `transforms`, `search`, `segments`, `metrics`, `reports`, and the default object that aggregates them. Do **not** export ad hoc hooks (such as custom install helpers or segment–plugin wiring) from interface packages; the server is responsible for any special install-time behavior tied to a specific interface path.
 

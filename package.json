@@ -5,7 +5,7 @@
   "description": "Engine9 core interfaces",
   "main": "index.js",
   "scripts": {
-    "test": "node --test person_address/normalize.test.js"
+    "test": "node --test person_address/normalize.test.js person_hash/hash.test.js"
   },
   "author": "",
   "license": "ISC",
