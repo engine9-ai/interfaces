@@ -48,14 +48,29 @@ The plugin provides outbound transforms for appending email data to batches:
 - `appendEmail` looks up `person_email` rows by `person_id` and appends `email` to each batch row. It can be filtered by `subscriptionStatus`, and it preserves any existing `email` value already on the row.
 - `appendEmailHash` appends `email_hash_v1` by hashing the row's trimmed, lowercased `email` when the hash is not already present.
 
-## Search and Segments
+## Search
 
 The `emails` search lets users find people who have an email address, optionally filtered by:
 
 - `subscriptionStatus`, using the same values as `subscription_status`
 - `emailMatch`, matched against the `email` column with `LIKE`
 
-The plugin also defines an `Email Subscribers` segment, which selects people with a `Subscribed` email address.
+## Segments
+
+Predefined audiences shipped with this interface. On install, each key becomes a `segment` row whose definition path is `@engine9/interfaces/person_email:segments:<key>`.
+
+### Email Subscribers
+
+| | |
+| --- | --- |
+| **Key** | `subscribers` |
+| **Definition path** | `@engine9/interfaces/person_email:segments:subscribers` |
+| **Who is included** | People with at least one email whose `subscription_status` is `Subscribed` |
+| **Who is excluded** | People whose emails are only `Not Subscribed`, `Unsubscribed`, `Bouncing`, or `Spam` |
+| **How it is built** | The `emails` search with `subscriptionStatus: Subscribed` |
+| **Universe** | None — membership is current `person_email` rows, not a time window or message input set |
+
+A person with mixed statuses is included if any of their addresses is `Subscribed`.
 
 ## Reports and UI
 

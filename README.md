@@ -2,6 +2,19 @@
 
 Engine9 interfaces are common schemas that are used by a variety of core and plugins. Implementing (aka extending) these interfaces allows plugins to participate in common tools and features, while adding in custom functionality.
 
+## Documentation
+
+Each interface package is documented in its own `README.md`. That file is the human-readable contract: what the package is for, the data model, inbound/outbound behavior, search, **predefined segments**, reports, and UI. Keep implementation details in code comments; keep audience and membership rules in the README.
+
+Packages with predefined segments:
+
+- [`person_email`](person_email/README.md) — Email Subscribers
+- [`person_phone`](person_phone/README.md) — Textable People
+- [`transaction/core`](transaction/core/README.md) — Customers
+- [`channels/email`](channels/email/README.md) — rolling-window email openers and clickers
+
+See [`skills/create-engine9-plugin/SKILL.md`](../skills/create-engine9-plugin/SKILL.md) for the README layout.
+
 ## Conventions
 
 - **Plugin uniqueness:** `SchemaWorker.install` reuses an existing `plugin` row when the path is unique: `metadata.unique` if set, otherwise `@engine9/interfaces/*` (except `person_custom`, which is `unique: false`). Native plugins that set `unique: true` behave the same. Third-party plugins and `person_custom` may have more than one instance per path; pass `id` to update an existing non-unique row.
