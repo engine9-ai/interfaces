@@ -1,19 +1,22 @@
 {
   "name": "@engine9/interfaces/stacks/limited-pii",
-  "description": "PII-minimized Engine9 stack: hash identifiers instead of plaintext email or phone. Excludes person_email and person_phone even if requested.",
-  "version": "1.0.0",
+  "description": "PII-minimized Engine9 stack: hash identifiers instead of plaintext email, phone, or postal address. Excludes person_email, person_phone, and person_address even if requested.",
+  "version": "1.1.0",
   "unique": true,
   "include": [
     "@engine9/interfaces/plugin",
     "@engine9/interfaces/person",
     "@engine9/interfaces/person_remote",
     "@engine9/interfaces/segment",
-    "@engine9/interfaces/person_address",
     "@engine9/interfaces/timeline",
     "@engine9/interfaces/source_code",
     "@engine9/interfaces/transaction/core",
     "@engine9/interfaces/transaction/profile",
     "@engine9/interfaces/person_hash"
   ],
-  "exclude": ["@engine9/interfaces/person_email", "@engine9/interfaces/person_phone"]
+  "exclude": [
+    "@engine9/interfaces/person_email",
+    "@engine9/interfaces/person_phone",
+    "@engine9/interfaces/person_address"
+  ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@engine9/interfaces/stacks/standard",
-  "description": "Default Engine9 interface stack: person, plaintext email and phone, transactions, and related core tables.",
+  "description": "Default Engine9 interface stack: person, plaintext email, phone, and postal address, transactions, and related core tables.",
   "version": "1.0.0",
   "unique": true,
   "include": [

@@ -7,6 +7,7 @@ test('standard stack includes plaintext contact plugins and does not exclude the
   assert.equal(standard.name, '@engine9/interfaces/stacks/standard');
   assert.ok(standard.include.includes('@engine9/interfaces/person_email'));
   assert.ok(standard.include.includes('@engine9/interfaces/person_phone'));
+  assert.ok(standard.include.includes('@engine9/interfaces/person_address'));
   assert.deepEqual(standard.exclude, []);
 });
 
@@ -15,6 +16,8 @@ test('limited-pii stack includes person_hash and excludes plaintext contact plug
   assert.ok(limitedPii.include.includes('@engine9/interfaces/person_hash'));
   assert.ok(!limitedPii.include.includes('@engine9/interfaces/person_email'));
   assert.ok(!limitedPii.include.includes('@engine9/interfaces/person_phone'));
+  assert.ok(!limitedPii.include.includes('@engine9/interfaces/person_address'));
   assert.ok(limitedPii.exclude.includes('@engine9/interfaces/person_email'));
   assert.ok(limitedPii.exclude.includes('@engine9/interfaces/person_phone'));
+  assert.ok(limitedPii.exclude.includes('@engine9/interfaces/person_address'));
 });
