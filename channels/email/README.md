@@ -14,7 +14,7 @@ It depends on `@engine9/interfaces/person` because membership is always a set of
 | `timelineEntryType` | `EMAIL_OPEN` or `EMAIL_CLICK` |
 | `pluginId` | Optional. When set, only that plugin's inputs are included. When empty, scope comes from the segment universe instead |
 
-The search looks at `timeline` rows whose `entry_type_id` matches the engagement type and whose `ts` is in the window. It always joins `timeline.input_id = input.id`, so only timeline events for inputs present in the build are counted.
+The search looks at `timeline` rows whose `entry_type_id` matches the engagement type and whose `ts` is in the window. It always joins `timeline.input_id = input.id`, so only timeline entries for inputs present in the build are counted.
 
 ## Segments
 
@@ -22,10 +22,10 @@ Predefined audiences shipped with this interface. On install, each key becomes a
 
 Every segment here uses the same **universe** and the `emailEngagement` search. The universe and the search do different jobs, and both are required:
 
-- **Universe** chooses *which email sends* can contribute events: messages on the email channel published in the last **90 days** (`global_message.channel = 'email'` and `publish_date` within 90 days). Those message ids become the `input` rows for the build.
+- **Universe** chooses *which email sends* can contribute entries: messages on the email channel published in the last **90 days** (`global_message.channel = 'email'` and `publish_date` within 90 days). Those message ids become the `input` rows for the build.
 - **Search** chooses *which people* from those sends belong in the audience: a recent open or click on the timeline, inside the segment's rolling window.
 
-An open or click on a message published more than 90 days ago does not count, even if the event itself is recent. `pluginId` is left empty so the universe, not a hardcoded plugin, decides which message stores are scanned.
+An open or click on a message published more than 90 days ago does not count, even if the entry itself is recent. `pluginId` is left empty so the universe, not a hardcoded plugin, decides which message stores are scanned.
 
 ### 30-day email openers
 
