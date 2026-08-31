@@ -12,8 +12,19 @@ const metadata = {
 };
 export const search = {
   all: {
-    form: {},
+    title: 'Remote people',
     name: 'All remote people',
+    form: {
+      title: 'Remote people',
+      type: 'object',
+      properties: {
+        pluginId: {
+          title: 'Plugin ID',
+          type: 'string'
+        }
+      },
+      required: []
+    },
     optionsToEQL: (options) => ({
       table: 'person_remote',
       columns: ['person_id'],

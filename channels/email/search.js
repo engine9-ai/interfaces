@@ -54,6 +54,7 @@ function buildEmailEngagementEql({ pluginId, windowDays, timelineEntryType }) {
 }
 
 export const emailEngagement = {
+  title: 'Email engagement (opens / clicks)',
   form: {
     title: 'Email engagement (opens / clicks)',
     type: 'object',

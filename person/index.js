@@ -17,27 +17,33 @@ const transforms = {
 };
 export const search = {
   person: {
+    title: 'Primary Info',
     form: {
-      givenName: {
-        title: 'First Name',
-        type: 'string'
+      title: 'Primary Info',
+      type: 'object',
+      properties: {
+        givenName: {
+          title: 'First Name',
+          type: 'string'
+        },
+        familyName: {
+          title: 'Last Name',
+          type: 'string'
+        },
+        ids: {
+          title: 'Person Ids (comma delimited)',
+          type: 'string'
+        },
+        idGreaterThanEqual: {
+          title: 'ID Greater than or equal to',
+          type: 'number'
+        },
+        idLessThan: {
+          title: 'ID less than',
+          type: 'number'
+        }
       },
-      familyName: {
-        title: 'Last Name',
-        type: 'string'
-      },
-      ids: {
-        title: 'Person Ids (comma delimited)',
-        type: 'string'
-      },
-      idGreaterThanEqual: {
-        title: 'ID Greater than or equal to',
-        type: 'number'
-      },
-      idLessThan: {
-        title: 'ID less than',
-        type: 'number'
-      }
+      required: []
     },
     optionsToEQL: (options) => {
       const text = [];

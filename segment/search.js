@@ -1,17 +1,16 @@
 export const segment = {
+  title: 'Segment',
   form: {
-    segments: {
-      title: 'Segment',
-      type: 'object',
-      properties: {
-        segmentId: {
-          title: 'Segment',
-          description: '',
-          type: 'string'
-        }
-      },
-      required: []
-    }
+    title: 'Segment',
+    type: 'object',
+    properties: {
+      segmentId: {
+        title: 'Segment',
+        description: '',
+        type: 'string'
+      }
+    },
+    required: []
   },
   optionsToEQLContext: function ({ segmentId }) {
     return {

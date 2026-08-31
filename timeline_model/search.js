@@ -1,26 +1,25 @@
 export const segment = {
+  title: 'Legacy Timeline',
   form: {
-    segments: {
-      title: 'Legacy Timeline',
-      type: 'object',
-      properties: {
-        modelId: {
-          title: 'Model ID',
-          description: '',
-          type: 'string',
-          enum: [
-            { value: '1', name: 'First Touch' },
-            { value: '2', name: 'CRM Origin' }
-          ]
-        },
-        sourceCode: {
-          title: 'Source Code',
-          description: '',
-          type: 'string'
-        }
+    title: 'Legacy Timeline',
+    type: 'object',
+    properties: {
+      modelId: {
+        title: 'Model ID',
+        description: '',
+        type: 'string',
+        enum: [
+          { value: '1', name: 'First Touch' },
+          { value: '2', name: 'CRM Origin' }
+        ]
       },
-      required: []
-    }
+      sourceCode: {
+        title: 'Source Code',
+        description: '',
+        type: 'string'
+      }
+    },
+    required: []
   },
   /* map from provided user data into an EQL structure */
   optionsToEQL(options) {

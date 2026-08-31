@@ -15,6 +15,7 @@ function hashColumnForValue(value, shaColumn, md5Column) {
 }
 
 export const emailHashes = {
+  title: 'Email hashes',
   form: {
     title: 'Email hashes',
     type: 'object',
@@ -23,7 +24,8 @@ export const emailHashes = {
         title: 'Email hash (SHA-256 or MD5 hex)',
         type: 'string'
       }
-    }
+    },
+    required: []
   },
   optionsToEQL(options) {
     const { emailHash } = options;
@@ -46,6 +48,7 @@ export const emailHashes = {
 };
 
 export const phoneHashes = {
+  title: 'Phone hashes',
   form: {
     title: 'Phone hashes',
     type: 'object',
@@ -54,7 +57,8 @@ export const phoneHashes = {
         title: 'Phone hash (SHA-256 or MD5 hex)',
         type: 'string'
       }
-    }
+    },
+    required: []
   },
   optionsToEQL(options) {
     const { phoneHash } = options;

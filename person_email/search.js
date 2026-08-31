@@ -1,19 +1,18 @@
 export const emails = {
+  title: 'Emails',
   form: {
-    emails: {
-      title: 'Emails',
-      type: 'object',
-      properties: {
-        emailMatch: {
-          type: 'string'
-        },
-        subscriptionStatus: {
-          type: 'string',
-          enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing', 'Spam']
-        }
+    title: 'Emails',
+    type: 'object',
+    properties: {
+      emailMatch: {
+        type: 'string'
       },
-      required: []
-    }
+      subscriptionStatus: {
+        type: 'string',
+        enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing', 'Spam']
+      }
+    },
+    required: []
   },
   /* map from provided user data into an EQL structure */
   optionsToEQL(options) {

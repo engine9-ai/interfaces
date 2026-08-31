@@ -1,23 +1,22 @@
 export const phones = {
+  title: 'Phones',
   form: {
-    phones: {
-      title: 'Phones',
-      type: 'object',
-      properties: {
-        phoneMatch: {
-          type: 'string'
-        },
-        smsStatus: {
-          type: 'string',
-          enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing']
-        },
-        callStatus: {
-          type: 'string',
-          enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing']
-        }
+    title: 'Phones',
+    type: 'object',
+    properties: {
+      phoneMatch: {
+        type: 'string'
       },
-      required: []
-    }
+      smsStatus: {
+        type: 'string',
+        enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing']
+      },
+      callStatus: {
+        type: 'string',
+        enum: ['Not Subscribed', 'Subscribed', 'Unsubscribed', 'Bouncing']
+      }
+    },
+    required: []
   },
   /* map from provided user data into an EQL structure */
   optionsToEQL(options) {

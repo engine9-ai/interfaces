@@ -1,6 +1,7 @@
 import { relativeDate, isValidDate } from '@engine9/input-tools';
 
 export const all = {
+  title: 'Transactions',
   form: {
     title: 'Transactions',
     type: 'object',
@@ -20,7 +21,8 @@ export const all = {
         description:
           'Optional; only include rows with ts < end (exclusive upper bound). Parsed with relativeDate; supports ISO datetimes or relative expressions.'
       }
-    }
+    },
+    required: []
   },
   optionsToEQL: (options) => {
     const { plugin_id, start, end } = options;
@@ -59,8 +61,9 @@ export const all = {
   }
 };
 export const minimum = {
+  title: 'Minimum transaction amount',
   form: {
-    title: 'Transactions',
+    title: 'Minimum transaction amount',
     type: 'object',
     properties: {
       amount: {
