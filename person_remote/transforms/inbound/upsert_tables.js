@@ -1,3 +1,5 @@
+import { mergeIntoQueue } from '@engine9/input-tools';
+
 export const bindings = ({ pluginId } = {}) => {
   if (!pluginId) {
     throw new Error('pluginId is required for person_remote upsert lookup');
@@ -24,12 +26,32 @@ export const bindings = ({ pluginId } = {}) => {
   };
 };
 export const type = 'upsert';
+
+function mergePersonRemote(existing, incoming) {
+  return {
+    ...existing,
+    ...incoming,
+    id: existing.id ?? incoming.id ?? null,
+    person_id: existing.person_id ?? incoming.person_id,
+    remote_person_id: existing.remote_person_id || incoming.remote_person_id,
+    source_input_id: existing.source_input_id ?? incoming.source_input_id
+  };
+}
+
+function queuePersonRemote(tablesToUpsert, row) {
+  tablesToUpsert.person_remote = tablesToUpsert.person_remote || [];
+  mergeIntoQueue(tablesToUpsert.person_remote, row, {
+    keyFields: ['source_input_id', 'remote_person_id', 'person_id'],
+    merge: mergePersonRemote,
+    label: 'person_remote'
+  });
+}
+
 export async function transform({ batch, databaseRemotes, tablesToUpsert }) {
   batch.forEach((o) => {
     if (!o.remote_person_id || !o.person_id) return;
     const remotePersonId = String(o.remote_person_id).trim();
     if (!remotePersonId) return;
-    tablesToUpsert.person_remote = tablesToUpsert.person_remote || [];
     // databaseRemotes is already scoped to this plugin_id via the input join
     const matchingRemotes = databaseRemotes.filter((d) => d.remote_person_id === remotePersonId);
     const personRemotes = matchingRemotes.filter((d) => d.person_id === o.person_id);
@@ -45,7 +67,7 @@ export async function transform({ batch, databaseRemotes, tablesToUpsert }) {
           'Invalid source_input_id for existing person_remote record:' + JSON.stringify(existing)
         );
       }
-      tablesToUpsert.person_remote.push({
+      queuePersonRemote(tablesToUpsert, {
         ...rest,
         id: existing.id,
         person_id: existing.person_id,
@@ -53,7 +75,7 @@ export async function transform({ batch, databaseRemotes, tablesToUpsert }) {
         source_input_id: existing.source_input_id
       });
     } else {
-      tablesToUpsert.person_remote.push({
+      queuePersonRemote(tablesToUpsert, {
         ...rest,
         id: null,
         person_id: o.person_id,

@@ -1,3 +1,4 @@
+import { mergeIntoQueue } from '@engine9/input-tools';
 import { isBlankMd5, isBlankSha256 } from '../../hash.js';
 
 export const type = 'upsert';
@@ -37,15 +38,32 @@ function findExisting(rows, personId, hashColumn, hashValue) {
   return forPerson[0] || null;
 }
 
+function mergeHashRow(existing, incoming, md5Column) {
+  return {
+    ...existing,
+    ...incoming,
+    [md5Column]: incoming[md5Column] || existing[md5Column] || '',
+    source_input_id: existing.source_input_id ?? incoming.source_input_id
+  };
+}
+
 function pushHashRow(tablesToUpsert, table, existing, { person_id, hashColumn, hashValue, md5Column, md5Value, input_id }) {
-  tablesToUpsert[table] = tablesToUpsert[table] || [];
   const md5 = md5Value || existing?.[md5Column] || '';
-  tablesToUpsert[table].push({
-    person_id: existing?.person_id || person_id,
-    [hashColumn]: hashValue,
-    [md5Column]: md5,
-    source_input_id: existing?.source_input_id || input_id
-  });
+  tablesToUpsert[table] = tablesToUpsert[table] || [];
+  mergeIntoQueue(
+    tablesToUpsert[table],
+    {
+      person_id: existing?.person_id || person_id,
+      [hashColumn]: hashValue,
+      [md5Column]: md5,
+      source_input_id: existing?.source_input_id || input_id
+    },
+    {
+      keyFields: ['person_id', hashColumn],
+      merge: (a, b) => mergeHashRow(a, b, md5Column),
+      label: table
+    }
+  );
 }
 
 export async function transform({ batch, databaseEmailHashes, databasePhoneHashes, tablesToUpsert }) {

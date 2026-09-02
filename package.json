@@ -5,12 +5,12 @@
   "description": "Engine9 core interfaces",
   "main": "index.js",
   "scripts": {
-    "test": "node --test person_address/normalize.test.js person_hash/hash.test.js stacks/stacks.test.js"
+    "test": "node --test person_address/normalize.test.js person_email/upsert.test.js person_hash/hash.test.js stacks/stacks.test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@engine9/input-tools": "^2.3.12",
+    "@engine9/input-tools": "^2.3.16",
     "@zerodep/address-normalize": "^2.4.10",
     "handlebars": "^4.7.8",
     "i18n-iso-countries": "^7.14.0"

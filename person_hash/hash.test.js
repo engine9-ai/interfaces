@@ -146,4 +146,20 @@ describe('person_hash upsert', () => {
     });
     assert.deepEqual(tablesToUpsert, {});
   });
+
+  it('merges duplicate hash rows in one batch', async () => {
+    const emailHash = sha256('dup@example.com');
+    const tablesToUpsert = {};
+    await upsertHashes.transform({
+      batch: [
+        { person_id: 5, input_id: 'input-a', email_hash_v1: emailHash, email_hash_md5: md5('dup@example.com') },
+        { person_id: 5, input_id: 'input-b', email_hash_v1: emailHash, email_hash_md5: md5('dup@example.com') }
+      ],
+      databaseEmailHashes: [],
+      databasePhoneHashes: [],
+      tablesToUpsert
+    });
+    assert.equal(tablesToUpsert.person_hash_email.length, 1);
+    assert.equal(tablesToUpsert.person_hash_email[0].source_input_id, 'input-a');
+  });
 });

@@ -1,15 +1,45 @@
+import { mergeIntoQueue } from '@engine9/input-tools';
+
 export const bindings = {
   // existingPersonEmails: { path: 'sql.query', table: 'person_email', lookup:['person_id'] },
   databaseEmails: { path: 'sql.query', options: { table: 'person_email', lookup: ['email'] } },
   tablesToUpsert: { path: 'sql.tables.upsert' }
 };
 export const type = 'upsert';
+
+const emailKeyNormalize = (field, value) =>
+  field === 'email' && typeof value === 'string' ? value.trim().toLowerCase() : (value ?? '');
+
+/** Last queued batch row wins on subscription_status (file order). */
+function mergePersonEmail(existing, incoming) {
+  return {
+    ...existing,
+    ...incoming,
+    id: existing.id ?? incoming.id ?? null,
+    email: existing.email || incoming.email,
+    person_id: existing.person_id ?? incoming.person_id,
+    subscription_status: incoming.subscription_status ?? existing.subscription_status,
+    email_hash_v1: incoming.email_hash_v1 || existing.email_hash_v1 || null,
+    source_input_id: existing.source_input_id ?? incoming.source_input_id
+  };
+}
+
+function queuePersonEmail(tablesToUpsert, row, { keyFields = ['email', 'person_id'], key } = {}) {
+  tablesToUpsert.person_email = tablesToUpsert.person_email || [];
+  mergeIntoQueue(tablesToUpsert.person_email, row, {
+    keyFields: key ? undefined : keyFields,
+    key,
+    normalizeField: key ? undefined : emailKeyNormalize,
+    merge: mergePersonEmail,
+    label: 'person_email'
+  });
+}
+
 export async function transform(props) {
   const { batch, databaseEmails, tablesToUpsert } = props;
   if (batch.length === 0) return;
   batch.forEach((o) => {
     if (!o.email) return;
-    tablesToUpsert.person_email = tablesToUpsert.person_email || [];
     // People like to believe email is case sensitive
     // emails are always trimmed, but that's it for inbound modifications.
     const email = o.email.trim();
@@ -37,7 +67,7 @@ export async function transform(props) {
     if (personEmails[0]) {
       // if it's explicitly specified, then update it, otherwise set it to what it was before
       status = status || personEmails[0].subscription_status;
-      tablesToUpsert.person_email.push({
+      queuePersonEmail(tablesToUpsert, {
         ...rest,
         id: personEmails[0].id,
         person_id: personEmails[0].person_id,
@@ -49,7 +79,7 @@ export async function transform(props) {
       });
     } else {
       status = status || 'Subscribed'; // Default subscribed
-      tablesToUpsert.person_email.push({
+      queuePersonEmail(tablesToUpsert, {
         ...rest,
         id: null,
         person_id: o.person_id,
@@ -62,7 +92,7 @@ export async function transform(props) {
     // including new ones
     if (status === 'Unsubscribed') {
       matchingEmails.forEach((original) => {
-        if (original.subscription_status !== 'Unsubscribed)') {
+        if (original.subscription_status !== 'Unsubscribed') {
           let updatedRecord = {};
           //this is to make sure the keys match
           Object.keys(rest).forEach((k) => {
@@ -76,11 +106,11 @@ export async function transform(props) {
             //make sure this doesn't change
             source_input_id: original.source_input_id
           });
-          tablesToUpsert.person_email.push(updatedRecord);
+          queuePersonEmail(tablesToUpsert, updatedRecord, { key: (row) => String(row.id) });
         }
       });
       tablesToUpsert.person_email
-        .filter((d) => d.id === null && d.email === email)
+        .filter((d) => d.id == null && d.email?.trim().toLowerCase() === lcEmail)
         .forEach((d) => {
           d.subscription_status = 'Unsubscribed';
         });

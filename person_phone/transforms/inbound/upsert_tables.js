@@ -1,3 +1,5 @@
+import { mergeIntoQueue } from '@engine9/input-tools';
+
 export const type = 'upsert';
 const MIN_PHONE_LENGTH = 8;
 function cleanedPhoneLength(phone) {
@@ -9,10 +11,36 @@ export const bindings = {
   tablesToUpsert: { path: 'sql.tables.upsert' },
   databasePhones: { path: 'sql.query', options: { table: 'person_phone', lookup: ['phone'] } }
 };
+
+function mergePersonPhone(existing, incoming) {
+  return {
+    ...existing,
+    ...incoming,
+    id: existing.id ?? incoming.id ?? null,
+    phone: existing.phone || incoming.phone,
+    person_id: existing.person_id ?? incoming.person_id,
+    source_input_id: existing.source_input_id ?? incoming.source_input_id,
+    sms_status: incoming.sms_status ?? existing.sms_status,
+    phone_type: incoming.phone_type ?? existing.phone_type,
+    preference_order:
+      incoming.preference_order !== undefined && incoming.preference_order !== null
+        ? incoming.preference_order
+        : existing.preference_order
+  };
+}
+
+function queuePersonPhone(tablesToUpsert, row) {
+  tablesToUpsert.person_phone = tablesToUpsert.person_phone || [];
+  mergeIntoQueue(tablesToUpsert.person_phone, row, {
+    keyFields: ['phone', 'person_id'],
+    merge: mergePersonPhone,
+    label: 'person_phone'
+  });
+}
+
 export async function transform({ batch, tablesToUpsert, databasePhones }) {
   batch.forEach((o) => {
     if (!o.phone || cleanedPhoneLength(o.phone) < MIN_PHONE_LENGTH) return;
-    tablesToUpsert.person_phone = tablesToUpsert.person_phone || [];
     // phone should be already cleaned in extract ids
     const matchingPhones = databasePhones.filter((d) => d.phone === o.phone);
     const personPhones = matchingPhones.filter((em) => o.person_id && em.person_id === o.person_id);
@@ -45,7 +73,7 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
     if (personPhones[0]) {
       if (!personPhones[0].source_input_id)
         throw new Error('Invalid source_input_id for existing person_phone record:' + JSON.stringify(personPhones[0]));
-      tablesToUpsert.person_phone.push({
+      queuePersonPhone(tablesToUpsert, {
         ...rest,
         id: personPhones[0].id,
         person_id: personPhones[0].person_id,
@@ -56,7 +84,7 @@ export async function transform({ batch, tablesToUpsert, databasePhones }) {
         preference_order
       });
     } else {
-      tablesToUpsert.person_phone.push({
+      queuePersonPhone(tablesToUpsert, {
         ...rest,
         id: null,
         person_id: o.person_id,
