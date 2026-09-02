@@ -1,6 +1,6 @@
 {
   "name": "@engine9/interfaces",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "type": "module",
   "description": "Engine9 core interfaces",
   "main": "index.js",
