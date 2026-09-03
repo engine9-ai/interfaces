@@ -20,6 +20,13 @@ function mergePersonPhone(existing, incoming) {
     phone: existing.phone || incoming.phone,
     person_id: existing.person_id ?? incoming.person_id,
     source_input_id: existing.source_input_id ?? incoming.source_input_id,
+    // These columns can be optional in inbound payloads, and `upsertArray`
+    // is strict about consistent object-key presence across samples.
+    // Normalize them so every queued object has the same key set.
+    phone_hash_v1: incoming.phone_hash_v1 ?? existing.phone_hash_v1 ?? '',
+    remote_phone_id: incoming.remote_phone_id ?? existing.remote_phone_id ?? null,
+    sms_deliverability_score: incoming.sms_deliverability_score ?? existing.sms_deliverability_score ?? 100,
+    call_status: incoming.call_status ?? existing.call_status ?? 'Not Subscribed',
     sms_status: incoming.sms_status ?? existing.sms_status,
     phone_type: incoming.phone_type ?? existing.phone_type,
     preference_order:
@@ -31,7 +38,14 @@ function mergePersonPhone(existing, incoming) {
 
 function queuePersonPhone(tablesToUpsert, row) {
   tablesToUpsert.person_phone = tablesToUpsert.person_phone || [];
-  mergeIntoQueue(tablesToUpsert.person_phone, row, {
+  const normalizedRow = {
+    ...row,
+    phone_hash_v1: row.phone_hash_v1 ?? '',
+    remote_phone_id: row.remote_phone_id ?? null,
+    sms_deliverability_score: row.sms_deliverability_score ?? 100,
+    call_status: row.call_status ?? 'Not Subscribed'
+  };
+  mergeIntoQueue(tablesToUpsert.person_phone, normalizedRow, {
     keyFields: ['phone', 'person_id'],
     merge: mergePersonPhone,
     label: 'person_phone'

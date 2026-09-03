@@ -19,14 +19,19 @@ function mergePersonEmail(existing, incoming) {
     email: existing.email || incoming.email,
     person_id: existing.person_id ?? incoming.person_id,
     subscription_status: incoming.subscription_status ?? existing.subscription_status,
-    email_hash_v1: incoming.email_hash_v1 || existing.email_hash_v1 || null,
+    // `person_email.email_hash_v1` is not nullable in MySQL; use blank string when unknown.
+    // Also, never drop the key entirely (upsertArray column inference depends on key presence).
+    email_hash_v1: incoming.email_hash_v1 ?? existing.email_hash_v1 ?? '',
     source_input_id: existing.source_input_id ?? incoming.source_input_id
   };
 }
 
 function queuePersonEmail(tablesToUpsert, row, { keyFields = ['email', 'person_id'], key } = {}) {
   tablesToUpsert.person_email = tablesToUpsert.person_email || [];
-  mergeIntoQueue(tablesToUpsert.person_email, row, {
+  // Ensure the key is present for every queued object so core upsertArray's
+  // "inconsistent upsert columns" check never trips.
+  const normalizedRow = { ...row, email_hash_v1: row.email_hash_v1 ?? '' };
+  mergeIntoQueue(tablesToUpsert.person_email, normalizedRow, {
     keyFields: key ? undefined : keyFields,
     key,
     normalizeField: key ? undefined : emailKeyNormalize,
@@ -96,7 +101,7 @@ export async function transform(props) {
           let updatedRecord = {};
           //this is to make sure the keys match
           Object.keys(rest).forEach((k) => {
-            updatedRecord[k] = original[k] || null;
+            updatedRecord[k] = original[k] ?? null;
           });
           Object.assign(updatedRecord, {
             id: original.id,
