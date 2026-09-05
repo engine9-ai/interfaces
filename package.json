@@ -1,6 +1,6 @@
 {
   "name": "@engine9/interfaces",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "type": "module",
   "description": "Engine9 core interfaces",
   "main": "index.js",
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@engine9/input-tools": "^2.3.16",
+    "@engine9/input-tools": "^2.4.0",
     "@zerodep/address-normalize": "^2.4.10",
     "handlebars": "^4.7.8",
     "i18n-iso-countries": "^7.14.0"

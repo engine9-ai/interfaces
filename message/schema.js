@@ -121,48 +121,9 @@ export const tables = [
       modified_at: 'modified_at'
     },
     indexes: [{ columns: 'id', primary: true }]
-  },
-  {
-    name: 'message_summary',
-    type: 'view',
-    sql: `select m.id as id,
-m.label,
-m.subject,
-m.channel,
-m.channel_label,
-m.type,
-m.status,
-m.publish_date,
-m.message_set_id,
-m.campaign_id,
-m.campaign_name,
-m.adset_id,
-m.adset_name,
-m.from_name,
-m.preview_url,
-m.primary_source_code,
-m.primary_source_code_override,
-m.final_primary_source_code,
-m.submodule,
-m.remote_id,
-m.do_not_attribute,
-m.message_id as message_id_int,
-mc.variables,
-mc.targeting,
-mc.estimated_targets,
-msg.created_at,
-msg.modified_at,
-stats.*,
-plugin.id as plugin_id,
-plugin.path as plugin_name,
-plugin.remote_plugin_id as remote_plugin_id
-from 
-global_message m
-left join message msg on (m.id=msg.id)
-left join plugin on (m.bot_id=plugin.remote_plugin_id)
-left join message_content mc on (m.id=mc.message_id)
-left join global_message_stats stats on (m.message_id=stats.message_id)`
   }
+  // message_summary / global_message*_summary stay out of core until messaging is
+  // finalized; Frakture deployments may still ship those views separately.
 ];
 export default {
   tables
