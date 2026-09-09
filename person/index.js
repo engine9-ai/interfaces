@@ -1,5 +1,5 @@
 import schema from './schema.js';
-import upsert from './transforms/inbound/upsert_tables.js';
+import upsertPerson from './transforms/inbound/upsert_tables.js';
 import normalizeFieldNames from './transforms/inbound/normalize_field_names.js';
 import simpleMap from './transforms/simpleMap.js';
 import appendName from './transforms/outbound/appendName.js';
@@ -7,11 +7,16 @@ import metrics from './metrics.js';
 const metadata = {
   name: '@engine9/interfaces/person',
   version: '1.0.0',
-  schemas: ['schema.js']
+  schemas: ['schema.js'],
+  // Inbound people pipeline slots -> transform export keys (woven by core when installed)
+  inbound: {
+    normalize: ['normalizeFieldNames'],
+    upsert: ['upsertPerson']
+  }
 };
 const transforms = {
   normalizeFieldNames,
-  upsert,
+  upsertPerson,
   simpleMap,
   appendName
 };

@@ -2,30 +2,36 @@
 
 `@engine9/interfaces/person_hash` stores **pseudonymous match keys** for email and phone — SHA-256 (`*_hash_v1`) and MD5 (`*_hash_md5`) — without storing the plaintext.
 
-It is **not** part of `installStandard` or the default inbound people pipeline. Install it explicitly (once per account — `unique: true`) and opt into its transforms via `extraTransforms` slots.
+It is **not** part of the standard stack. It ships in `@engine9/interfaces/stacks/limited-pii`, or install it explicitly (once per account — `unique: true`). Once installed, core weaves its transforms into the inbound people pipeline automatically.
+
+Server `settings.exclude_pii` (nearest account in child-first lineage) makes `installStandard()` default to limited-pii and refuses `@engine9/interfaces/stacks/standard`, `person_email`, `person_phone`, and `person_address` even if those plugins are already installed. That does **not** uninstall leftover plaintext tables.
 
 It does **not** depend on `person_email` or `person_phone`. Those plugins may be installed alongside it; this interface never writes to their tables.
 
 ## Install
 
 ```javascript
-await schemaWorker.install({ path: '@engine9/interfaces/person_hash' });
+await pluginWorker.install({ path: '@engine9/interfaces/person_hash' });
+// or the PII-free stack
+await pluginWorker.installStandard({ path: '@engine9/interfaces/stacks/limited-pii' });
 ```
 
 A second install of the same path reuses the existing plugin row.
 
-## Opt into the inbound pipeline
+## Inbound pipeline slots
 
-`metadata.inbound` names the extraTransforms slots (not hardcoded in core):
+`metadata.inbound` declares where the transforms run; core reads it from the installed plugin row and never hardcodes this path:
 
 ```javascript
-extraTransforms: {
-  beforeIdentity: [{ path: '@engine9/interfaces/person_hash:transforms:id' }],
-  beforeUpsert: [{ path: '@engine9/interfaces/person_hash:transforms:upsert' }]
+inbound: {
+  id: ['extractContactHashes'],  // with the other identifier extracts, before person_id assignment
+  upsert: ['upsertPersonHash']   // with the other table upserts, after person_id assignment
 }
 ```
 
-On the server, pass the same object as `extra_transforms` to `loadPeople` / `idFiles`. `beforeIdentity` runs after the standard email/phone identifier extracts and before `person_id` assignment. `beforeUpsert` runs after `person_id` is assigned and before the standard table upserts.
+How slots and the weaver work: `@engine9/core/lib/peoplePipeline/README.md`.
+
+To see the woven chain for an account: `personWorker.getInboundTransforms({ pluginId, describe: true })` (CLI: `e9 personworker getInboundTransforms --plugin_id=<plugin_id> --describe=true`). On a limited-pii account the listing has `person_hash` on `id` and `upsert` and no `person_email` / `person_phone` / `person_address` lines. Drop a step for one job with `omit_transforms`.
 
 ## Data Model
 
@@ -47,10 +53,18 @@ Primary key: `(person_id, phone_hash_v1)`. Same shape with `phone_hash_v1` / `ph
 
 ## Inbound Behavior
 
-The `id` transform hashes `email` / `phone` (or mobile/cell aliases) when present, or accepts an existing `email_hash_v1` / `phone_hash_v1`. It pushes those SHA-256 values as person identifiers. It does not write email or phone onto the hash tables.
+The `extractContactHashes` transform hashes `email` / `phone` (or mobile/cell aliases) when present, or accepts an existing `email_hash_v1` / `phone_hash_v1`. It pushes those SHA-256 values as person identifiers. It does not write email or phone onto the hash tables.
 
-The `upsert` transform writes only hash columns to `person_hash_email` / `person_hash_phone`.
+The `upsertPersonHash` transform writes only hash columns to `person_hash_email` / `person_hash_phone`.
 
 ## Outbound Behavior
 
 - `appendEmailHash` / `appendPhoneHash` attach hashes from plaintext on the row, or from the hash tables by `person_id`. They do not append email or phone.
+
+## Search
+
+`PersonWorker.search` `emails` / `phones` match `person_email` / `person_phone` when those tables exist, and also hash the query (or accept SHA-256 / MD5 hex) against `person_hash_email` / `person_hash_phone`. If the caller passed emails or phones and neither table exists, the clause matches nobody (`1=0`). Related summaries include `email_hashes` / `phone_hashes` when those tables are present.
+
+The plugin also exports `search.emailHashes` / `search.phoneHashes` for the plugin search tree (`@engine9/interfaces/person_hash:search:emailHashes`).
+
+Default warehouse export includes the hash tables (export skips them when they do not exist). When `settings.exclude_pii` is set and `tables` is not explicit, `person_email` / `person_phone` / `person_address` are omitted from that default list.

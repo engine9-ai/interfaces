@@ -1,0 +1,80 @@
+{
+  routes: {
+    'person/:id/*': {
+      components: {
+        sidebar: {
+          items: [
+            {
+              component: 'Link',
+              properties: {
+                label: 'Email hashes',
+                to: 'email_hashes'
+              }
+            },
+            {
+              component: 'Link',
+              properties: {
+                label: 'Phone hashes',
+                to: 'phone_hashes'
+              }
+            }
+          ]
+        },
+        main: [
+          {
+            path: 'email_hashes',
+            label: 'Email hashes',
+            component: 'RecordTable',
+            properties: {
+              table: 'person_hash_email',
+              conditions: [{ eql: 'person_id={{id}}' }],
+              columns: [
+                {
+                  title: 'SHA-256',
+                  template: '{{email_hash_v1}}',
+                  width: '45%'
+                },
+                {
+                  title: 'MD5',
+                  template: '{{email_hash_md5}}',
+                  width: '35%'
+                },
+                {
+                  title: 'Modified',
+                  template: '{{date modified_at}}',
+                  width: '20%'
+                }
+              ]
+            }
+          },
+          {
+            path: 'phone_hashes',
+            label: 'Phone hashes',
+            component: 'RecordTable',
+            properties: {
+              table: 'person_hash_phone',
+              conditions: [{ eql: 'person_id={{id}}' }],
+              columns: [
+                {
+                  title: 'SHA-256',
+                  template: '{{phone_hash_v1}}',
+                  width: '45%'
+                },
+                {
+                  title: 'MD5',
+                  template: '{{phone_hash_md5}}',
+                  width: '35%'
+                },
+                {
+                  title: 'Modified',
+                  template: '{{date modified_at}}',
+                  width: '20%'
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

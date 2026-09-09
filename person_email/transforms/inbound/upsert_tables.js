@@ -7,8 +7,12 @@ export const bindings = {
 };
 export const type = 'upsert';
 
-const emailKeyNormalize = (field, value) =>
-  field === 'email' && typeof value === 'string' ? value.trim().toLowerCase() : (value ?? '');
+const emailKeyNormalize = (field, value) => {
+  if (field === 'email' && typeof value === 'string') return value.trim().toLowerCase();
+  // person_id may arrive as number or string from different pipeline stages
+  if (field === 'person_id' && value != null && value !== '') return String(value);
+  return value ?? '';
+};
 
 /** Last queued batch row wins on subscription_status (file order). */
 function mergePersonEmail(existing, incoming) {

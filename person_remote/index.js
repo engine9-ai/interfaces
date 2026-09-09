@@ -1,13 +1,18 @@
 import schema from './schema.js';
 import metrics from './metrics.js';
-import id from './transforms/inbound/extract_identifiers.js';
-import upsert from './transforms/inbound/upsert_tables.js';
+import extractRemotePersonIds from './transforms/inbound/extract_identifiers.js';
+import upsertPersonRemote from './transforms/inbound/upsert_tables.js';
 import appendRemotePersonId from './transforms/outbound/appendRemotePersonId.js';
 const metadata = {
   name: '@engine9/interfaces/person_remote',
   version: '1.0.0',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
+  },
+  // Inbound people pipeline slots -> transform export keys (woven by core when installed)
+  inbound: {
+    id: ['extractRemotePersonIds'],
+    upsert: ['upsertPersonRemote']
   }
 };
 export const search = {
@@ -38,8 +43,8 @@ export const search = {
   }
 };
 export const transforms = {
-  id,
-  upsert,
+  extractRemotePersonIds,
+  upsertPersonRemote,
   appendRemotePersonId
 };
 export { metadata };

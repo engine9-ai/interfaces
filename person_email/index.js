@@ -1,6 +1,6 @@
 import schema from './schema.js';
-import id from './transforms/inbound/extract_identifiers.js';
-import upsert from './transforms/inbound/upsert_tables.js';
+import extractEmailHashes from './transforms/inbound/extract_identifiers.js';
+import upsertPersonEmail from './transforms/inbound/upsert_tables.js';
 import search from './search.js';
 import appendEmail from './transforms/outbound/appendEmail.js';
 import appendEmailHash from './transforms/outbound/appendEmailHash.js';
@@ -11,14 +11,19 @@ const metadata = {
   version: '1.0.0',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
+  },
+  // Inbound people pipeline slots -> transform export keys (woven by core when installed)
+  inbound: {
+    id: ['extractEmailHashes'],
+    upsert: ['upsertPersonEmail']
   }
 };
 export const reports = {
   subscription_status
 };
 export const transforms = {
-  id,
-  upsert,
+  extractEmailHashes,
+  upsertPersonEmail,
   appendEmail,
   appendEmailHash
 };

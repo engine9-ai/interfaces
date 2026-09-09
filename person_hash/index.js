@@ -1,7 +1,7 @@
 import schema from './schema.js';
 import search from './search.js';
-import id from './transforms/inbound/extract_identifiers.js';
-import upsert from './transforms/inbound/upsert_tables.js';
+import extractContactHashes from './transforms/inbound/extract_identifiers.js';
+import upsertPersonHash from './transforms/inbound/upsert_tables.js';
 import appendEmailHash from './transforms/outbound/appendEmailHash.js';
 import appendPhoneHash from './transforms/outbound/appendPhoneHash.js';
 
@@ -12,17 +12,17 @@ const metadata = {
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
   },
-  // Named pipeline slots for extraTransforms / a future installed-plugin weaver.
-  // Core must not hardcode this path in the standard inbound chain.
+  // Inbound people pipeline slots -> transform export keys. Core weaves these in
+  // whenever this plugin is installed; it never hardcodes this path.
   inbound: {
-    beforeIdentity: ['id'],
-    beforeUpsert: ['upsert']
+    id: ['extractContactHashes'],
+    upsert: ['upsertPersonHash']
   }
 };
 
 export const transforms = {
-  id,
-  upsert,
+  extractContactHashes,
+  upsertPersonHash,
   appendEmailHash,
   appendPhoneHash
 };
