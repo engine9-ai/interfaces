@@ -77,4 +77,23 @@ An open or click on a message published more than 90 days ago does not count, ev
 | **Definition path** | `@engine9/interfaces/channels/email:segments:email_clickers_90d` |
 | **Who is included** | People with an `EMAIL_CLICK` on a universe email in the last 90 days |
 
-Openers and clickers are independent. A clicker is not automatically an opener in these definitions; each segment looks only at its own timeline entry type.
+## Reports and UI
+
+This interface installs reports under `@engine9/interfaces/channels/email:reports:<key>`. They query `global_message_summary` for `channel='email'`. Date filters (`start`, `end`) apply to `publish_date`.
+
+### Email Engagement (`summary`)
+
+| | |
+| --- | --- |
+| **Path** | `@engine9/interfaces/channels/email:reports:summary` |
+| **What it shows** | Messages sent, open and click rates, unsubscribes, bounces, plus message and campaign tables |
+
+### Email Fundraising (`transactions`)
+
+| | |
+| --- | --- |
+| **Path** | `@engine9/interfaces/channels/email:reports:transactions` |
+| **What it shows** | Attributed revenue and transactions vs send, open, and click performance |
+
+List and run reports with MCP `report` (`command: list` / `run`) or `GET /data/reports` and `GET /data/reports/run`.
+

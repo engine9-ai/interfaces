@@ -74,6 +74,14 @@ A person with mixed statuses is included if any of their addresses is `Subscribe
 
 ## Reports and UI
 
-The exported report is `Email Subscription Status`. It summarizes email counts by source plugin, including counts for `Subscribed`, `Unsubscribed`, `Bouncing`, `Spam`, and `Not Subscribed` emails.
+Installed reports (MCP `report` / `GET /data/reports`) use path `@engine9/interfaces/person_email:reports:<key>`.
+
+### Email Subscription Status (`subscription_status`)
+
+| | |
+| --- | --- |
+| **Path** | `@engine9/interfaces/person_email:reports:subscription_status` |
+| **What it shows** | Email counts by source plugin, including `Subscribed`, `Unsubscribed`, `Bouncing`, `Spam`, and `Not Subscribed` |
+| **Filters** | Optional `plugin_name` (contains match on `plugin.name`) |
 
 The console UI adds an `Emails` tab on person records. It displays each person's email rows with the email address, type, subscription status, and modified timestamp.
