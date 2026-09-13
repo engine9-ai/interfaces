@@ -4,7 +4,6 @@ import normalizeFieldNames from './transforms/inbound/normalize_field_names.js';
 import simpleMap from './transforms/simpleMap.js';
 import appendName from './transforms/outbound/appendName.js';
 import metrics from './metrics.js';
-import summary from './reports/summary.js';
 const metadata = {
   name: '@engine9/interfaces/person',
   version: '1.0.0',
@@ -89,9 +88,6 @@ export const search = {
     }
   }
 };
-export const reports = {
-  summary
-};
 export { metadata };
 export { schema };
 export { transforms };
@@ -101,6 +97,5 @@ export default {
   schema,
   transforms,
   metrics,
-  reports,
   search
 };

@@ -79,21 +79,5 @@ An open or click on a message published more than 90 days ago does not count, ev
 
 ## Reports and UI
 
-This interface installs reports under `@engine9/interfaces/channels/email:reports:<key>`. They query `global_message_summary` for `channel='email'`. Date filters (`start`, `end`) apply to `publish_date`.
-
-### Email Engagement (`summary`)
-
-| | |
-| --- | --- |
-| **Path** | `@engine9/interfaces/channels/email:reports:summary` |
-| **What it shows** | Messages sent, open and click rates, unsubscribes, bounces, plus message and campaign tables |
-
-### Email Fundraising (`transactions`)
-
-| | |
-| --- | --- |
-| **Path** | `@engine9/interfaces/channels/email:reports:transactions` |
-| **What it shows** | Attributed revenue and transactions vs send, open, and click performance |
-
-List and run reports with MCP `report` (`command: list` / `run`) or `GET /data/reports` and `GET /data/reports/run`.
+This interface does not ship reports. Email engagement and fundraising dashboards live on `@engine9/plugins/reports/messaging` (`email`, `email_transactions`). See [`plugins/reports/messaging/README.md`](../../../plugins/reports/messaging/README.md).
 

@@ -1,6 +1,6 @@
 # Person Email Interface
 
-The `@engine9/interfaces/person_email` plugin stores email addresses for people and provides the common email-related behavior used by imports, matching, searches, segments, reports, and exports.
+The `@engine9/interfaces/person_email` plugin stores email addresses for people and provides the common email-related behavior used by imports, matching, searches, segments, and exports.
 
 It depends on `@engine9/interfaces/person` because every email row belongs to a person through `person_id`.
 
@@ -74,14 +74,6 @@ A person with mixed statuses is included if any of their addresses is `Subscribe
 
 ## Reports and UI
 
-Installed reports (MCP `report` / `GET /data/reports`) use path `@engine9/interfaces/person_email:reports:<key>`.
-
-### Email Subscription Status (`subscription_status`)
-
-| | |
-| --- | --- |
-| **Path** | `@engine9/interfaces/person_email:reports:subscription_status` |
-| **What it shows** | Email counts by source plugin, including `Subscribed`, `Unsubscribed`, `Bouncing`, `Spam`, and `Not Subscribed` |
-| **Filters** | Optional `plugin_name` (contains match on `plugin.name`) |
+Email subscription dashboards live on `@engine9/plugins/reports/people` (`subscription_status`). See [`plugins/reports/people/README.md`](../../plugins/reports/people/README.md).
 
 The console UI adds an `Emails` tab on person records. It displays each person's email rows with the email address, type, subscription status, and modified timestamp.

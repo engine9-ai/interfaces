@@ -5,7 +5,6 @@ import search from './search.js';
 import appendEmail from './transforms/outbound/appendEmail.js';
 import appendEmailHash from './transforms/outbound/appendEmailHash.js';
 import segments from './segments.js';
-import subscription_status from './reports/subscription_status.js';
 const metadata = {
   name: '@engine9/interfaces/person_email',
   version: '1.0.0',
@@ -17,9 +16,6 @@ const metadata = {
     id: ['extractEmailHashes'],
     upsert: ['upsertPersonEmail']
   }
-};
-export const reports = {
-  subscription_status
 };
 export const transforms = {
   extractEmailHashes,
@@ -33,7 +29,6 @@ export { search };
 export { segments };
 export default {
   metadata,
-  reports,
   schema,
   search,
   segments,
