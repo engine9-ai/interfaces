@@ -4,6 +4,9 @@ The `@engine9/interfaces/person_email` plugin stores email addresses for people 
 
 It depends on `@engine9/interfaces/person` because every email row belongs to a person through `person_id`.
 
+Browser / public forms should use the column name **`email_type`** (never `type`).
+See [`@engine9/id` forms docs](../../id/docs/forms.md).
+
 ## Data Model
 
 The plugin creates the `person_email` table. A person can have multiple email rows, but each `(email, person_id)` pair is unique.
