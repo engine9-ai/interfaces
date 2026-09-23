@@ -1,4 +1,4 @@
-// OpenID Connect profile scope fields (address, phone) plus domain-specific employer/occupation.
+// Contact details captured on a transaction: address, email, phone, employer, and occupation.
 export const tables = [
   {
     name: 'transaction',

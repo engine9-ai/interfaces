@@ -11,7 +11,8 @@ export const tables = [
         type: 'hash',
         nullable: true,
         default_value: '',
-        description: 'MD5 hex of the trimmed, lowercased email; empty when plaintext was not available'
+        description:
+          'Legacy MD5 hex of the trimmed, uppercased email (political match contexts); empty when plaintext was not available'
       },
       source_input_id: 'foreign_uuid',
       created_at: 'created_at',

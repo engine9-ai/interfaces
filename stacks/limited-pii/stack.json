@@ -11,7 +11,7 @@
     "@engine9/interfaces/timeline",
     "@engine9/interfaces/source_code",
     "@engine9/interfaces/transaction/core",
-    "@engine9/interfaces/transaction/profile",
+    "@engine9/interfaces/transaction/contact_details",
     "@engine9/interfaces/person_hash"
   ],
   "exclude": [

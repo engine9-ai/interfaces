@@ -8,7 +8,10 @@ test('standard stack includes plaintext contact plugins and does not exclude the
   assert.ok(standard.include.includes('@engine9/interfaces/person_email'));
   assert.ok(standard.include.includes('@engine9/interfaces/person_phone'));
   assert.ok(standard.include.includes('@engine9/interfaces/person_address'));
-  assert.ok(standard.include.includes('@engine9/plugins/reports/people'));
+  assert.ok(standard.include.includes('@engine9/interfaces/timeline'));
+  assert.ok(standard.include.includes('@engine9/interfaces/source_code'));
+  assert.ok(standard.include.includes('@engine9/interfaces/transaction/core'));
+  assert.ok(!standard.include.includes('@engine9/plugins/reports/people'));
   assert.deepEqual(standard.exclude, []);
 });
 

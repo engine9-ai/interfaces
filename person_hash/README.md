@@ -43,7 +43,7 @@ Primary key: `(person_id, email_hash_v1)`.
 | --- | --- | --- |
 | `person_id` | `person_id` | Person that owns the hash. |
 | `email_hash_v1` | `hash` | SHA-256 of the trimmed, lowercased email. Used as the person identifier type `email_hash_v1`. |
-| `email_hash_md5` | `hash` | MD5 of the same normalized email. Empty when the inbound row had a SHA-256 but no plaintext. |
+| `email_hash_md5` | `hash` | Legacy MD5 of the trimmed, **uppercased** email. Kept for some political matching contexts; empty when the inbound row had a SHA-256 but no plaintext. |
 | `source_input_id` | `foreign_uuid` | Input that originally created the row. Existing rows keep their original source. |
 | `created_at` / `modified_at` | timestamps | |
 

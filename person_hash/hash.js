@@ -23,8 +23,9 @@ export function isBlankMd5(value) {
 }
 
 /**
- * Trim + lowercase. Matching and hashing always use this form;
+ * Trim + lowercase. Matching and `email_hash_v1` always use this form;
  * callers that persist plaintext should keep the original casing.
+ * (`email_hash_md5` uses the uppercased form — see `hashEmail`.)
  */
 export function normalizeEmail(email) {
   if (email == null) return '';
@@ -32,7 +33,9 @@ export function normalizeEmail(email) {
 }
 
 /**
- * SHA-256 (`email_hash_v1`) and MD5 (`email_hash_md5`) of the normalized email.
+ * SHA-256 (`email_hash_v1`) of the trimmed, lowercased email (industry-standard match key).
+ * MD5 (`email_hash_md5`) of the trimmed, *uppercased* email — legacy; kept for some
+ * political matching contexts that historically hashed uppercase addresses.
  * Returns null when the email is missing or shorter than MIN_EMAIL_LENGTH.
  */
 export function hashEmail(email) {
@@ -40,7 +43,7 @@ export function hashEmail(email) {
   if (hashable.length < MIN_EMAIL_LENGTH) return null;
   return {
     email_hash_v1: digestHex('sha256', hashable),
-    email_hash_md5: digestHex('md5', hashable)
+    email_hash_md5: digestHex('md5', hashable.toUpperCase())
   };
 }
 

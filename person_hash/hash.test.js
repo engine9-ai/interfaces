@@ -21,10 +21,10 @@ function md5(value) {
 }
 
 describe('person_hash helpers', () => {
-  it('hashes trimmed lowercased email with sha256 and md5', () => {
+  it('hashes trimmed lowercased email with sha256 and uppercased with md5', () => {
     const hashes = hashEmail('  TeSt@Example.COM  ');
     assert.equal(hashes.email_hash_v1, sha256('test@example.com'));
-    assert.equal(hashes.email_hash_md5, md5('test@example.com'));
+    assert.equal(hashes.email_hash_md5, md5('TEST@EXAMPLE.COM'));
     assert.equal(normalizeEmail('  TeSt@Example.COM  '), 'test@example.com');
   });
 
@@ -64,7 +64,7 @@ describe('person_hash extract_identifiers', () => {
     const batch = [{ email: 'Alice@Example.com', phone: '202-555-0143' }];
     await extractIdentifiers.transform({ batch });
     assert.equal(batch[0].email_hash_v1, sha256('alice@example.com'));
-    assert.equal(batch[0].email_hash_md5, md5('alice@example.com'));
+    assert.equal(batch[0].email_hash_md5, md5('ALICE@EXAMPLE.COM'));
     assert.equal(batch[0].phone, '+12025550143');
     assert.equal(batch[0].phone_hash_v1, sha256('+12025550143'));
     assert.deepEqual(
@@ -110,7 +110,7 @@ describe('person_hash upsert', () => {
           input_id: 'new-input',
           email: 'a@example.com',
           email_hash_v1: emailHash,
-          email_hash_md5: md5('a@example.com'),
+          email_hash_md5: md5('A@EXAMPLE.COM'),
           given_name: 'Ada'
         }
       ],
@@ -129,7 +129,7 @@ describe('person_hash upsert', () => {
     assert.deepEqual(tablesToUpsert.person_hash_email[0], {
       person_id: 9,
       email_hash_v1: emailHash,
-      email_hash_md5: md5('a@example.com'),
+      email_hash_md5: md5('A@EXAMPLE.COM'),
       source_input_id: 'original-input'
     });
     assert.equal('email' in tablesToUpsert.person_hash_email[0], false);
@@ -152,8 +152,8 @@ describe('person_hash upsert', () => {
     const tablesToUpsert = {};
     await upsertHashes.transform({
       batch: [
-        { person_id: 5, input_id: 'input-a', email_hash_v1: emailHash, email_hash_md5: md5('dup@example.com') },
-        { person_id: 5, input_id: 'input-b', email_hash_v1: emailHash, email_hash_md5: md5('dup@example.com') }
+        { person_id: 5, input_id: 'input-a', email_hash_v1: emailHash, email_hash_md5: md5('DUP@EXAMPLE.COM') },
+        { person_id: 5, input_id: 'input-b', email_hash_v1: emailHash, email_hash_md5: md5('DUP@EXAMPLE.COM') }
       ],
       databaseEmailHashes: [],
       databasePhoneHashes: [],

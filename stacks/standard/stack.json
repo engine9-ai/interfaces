@@ -1,6 +1,6 @@
 {
   "name": "@engine9/interfaces/stacks/standard",
-  "description": "Default Engine9 interface stack: person, plaintext email, phone, and postal address, transactions, related core tables, and people reports.",
+  "description": "Opt-in Engine9 interface stack: person, plaintext email, phone, and postal address, timeline, source codes, and transactions. Reports install separately.",
   "version": "1.0.0",
   "unique": true,
   "include": [
@@ -14,8 +14,7 @@
     "@engine9/interfaces/timeline",
     "@engine9/interfaces/source_code",
     "@engine9/interfaces/transaction/core",
-    "@engine9/interfaces/transaction/profile",
-    "@engine9/plugins/reports/people"
+    "@engine9/interfaces/transaction/contact_details"
   ],
   "exclude": []
 }
