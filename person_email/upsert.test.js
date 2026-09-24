@@ -84,4 +84,43 @@ describe('person_email upsert_tables', () => {
     assert.equal(rowA.email_hash_v1, 'hash-a');
     assert.equal(rowB.email_hash_v1, '', 'missing email_hash_v1 should normalize to blank string');
   });
+
+  it('normalizes type and email_type onto the same email_type key', async () => {
+    const tablesToUpsert = {};
+    await upsertEmails.transform({
+      batch: [
+        { person_id: 1, email: 'a@example.com', input_id: 'input-a', type: 'Work' },
+        { person_id: 2, email: 'b@example.com', input_id: 'input-a', email_type: 'Other' }
+      ],
+      databaseEmails: [],
+      tablesToUpsert
+    });
+    assert.deepEqual(
+      tablesToUpsert.person_email.map((row) => row.email_type),
+      ['Work', 'Other']
+    );
+    for (const row of tablesToUpsert.person_email) {
+      assert.equal('type' in row, false);
+      assert.equal('email_type' in row, true);
+    }
+  });
+
+  it('keeps the stored email_type when an update does not send one', async () => {
+    const tablesToUpsert = {};
+    await upsertEmails.transform({
+      batch: [{ person_id: 1, email: 'a@example.com', input_id: 'input-a', subscription_status: 'Subscribed' }],
+      databaseEmails: [
+        {
+          id: 9,
+          person_id: 1,
+          email: 'a@example.com',
+          email_type: 'Work',
+          subscription_status: 'Subscribed',
+          source_input_id: 'input-a'
+        }
+      ],
+      tablesToUpsert
+    });
+    assert.equal(tablesToUpsert.person_email[0].email_type, 'Work');
+  });
 });

@@ -34,7 +34,14 @@ function queuePersonEmail(tablesToUpsert, row, { keyFields = ['email', 'person_i
   tablesToUpsert.person_email = tablesToUpsert.person_email || [];
   // Ensure the key is present for every queued object so core upsertArray's
   // "inconsistent upsert columns" check never trips.
-  const normalizedRow = { ...row, email_hash_v1: row.email_hash_v1 ?? '' };
+  // `type` is the old field name for `email_type`. Every queued row needs the
+  // same keys; a batch that mixes the two names fails the upsert column check.
+  const normalizedRow = {
+    ...row,
+    email_hash_v1: row.email_hash_v1 ?? '',
+    email_type: row.email_type ?? row.type ?? 'Personal'
+  };
+  delete normalizedRow.type;
   mergeIntoQueue(tablesToUpsert.person_email, normalizedRow, {
     keyFields: key ? undefined : keyFields,
     key,
@@ -81,6 +88,7 @@ export async function transform(props) {
         id: personEmails[0].id,
         person_id: personEmails[0].person_id,
         email,
+        email_type: o.email_type ?? o.type ?? personEmails[0].email_type ?? 'Personal',
         subscription_status: status,
         //make sure this doesn't change
         source_input_id: personEmails[0].source_input_id
@@ -111,6 +119,7 @@ export async function transform(props) {
             id: original.id,
             person_id: original.person_id,
             email,
+            email_type: o.email_type ?? o.type ?? original.email_type ?? 'Personal',
             subscription_status: 'Unsubscribed',
             //make sure this doesn't change
             source_input_id: original.source_input_id
