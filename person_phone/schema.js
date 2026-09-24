@@ -8,7 +8,7 @@ export const tables = [
         type: 'string',
         nullable: false,
         default_value: 'Personal',
-        values: ['Personal', 'Cell', 'Home', 'Work', 'Fax', 'Other']
+        values: ['', 'Personal', 'Cell', 'Home', 'Work', 'Fax', 'Other']
       },
       phone: 'string',
       preference_order: {

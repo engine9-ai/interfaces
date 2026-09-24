@@ -8,7 +8,7 @@ export const tables = [
         type: 'string',
         nullable: false,
         default_value: 'Personal',
-        values: ['Personal', 'Work', 'Other']
+        values: ['', 'Personal', 'Work', 'Other']
       },
       email: 'string',
       subscription_status: {
