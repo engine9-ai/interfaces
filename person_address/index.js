@@ -5,7 +5,6 @@ import schema from './schema.js';
 
 const metadata = {
   name: '@engine9/interfaces/person_address',
-  version: '1.1.0',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
   },

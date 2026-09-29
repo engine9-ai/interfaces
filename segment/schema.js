@@ -42,6 +42,17 @@ export const tables = [
       build_status_modified_at: 'modified_at',
       build_table: 'string',
       last_built: 'datetime',
+      // Membership policy. null = only a request with `admin` scope.
+      // join_min_level:  lowest Identity Level at which a person may add
+      //                  themselves (0 = a public form, no login)
+      // leave_min_level: lowest Identity Level at which a person may remove
+      //                  themselves (never 0)
+      // manager_role_id: role segment whose members may add and remove
+      //                  other people in this segment
+      // Enforced by @engine9/core (docs/segments.md), not by the database.
+      join_min_level: { type: 'int', nullable: true },
+      leave_min_level: { type: 'int', nullable: true },
+      manager_role_id: 'foreign_uuid',
       people: 'int', // engine9 count
       reported_people: 'int', // reported by outside parties
       created_at: 'created_at',

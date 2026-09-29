@@ -6,7 +6,6 @@ import appendName from './transforms/outbound/appendName.js';
 import metrics from './metrics.js';
 const metadata = {
   name: '@engine9/interfaces/person',
-  version: '1.0.0',
   schemas: ['schema.js'],
   // Inbound people pipeline slots -> transform export keys (woven by core when installed)
   inbound: {

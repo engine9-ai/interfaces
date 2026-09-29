@@ -7,7 +7,6 @@ import appendEmailHash from './transforms/outbound/appendEmailHash.js';
 import segments from './segments.js';
 const metadata = {
   name: '@engine9/interfaces/person_email',
-  version: '1.0.0',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
   },

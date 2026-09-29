@@ -5,7 +5,6 @@ import upsertPersonRemote from './transforms/inbound/upsert_tables.js';
 import appendRemotePersonId from './transforms/outbound/appendRemotePersonId.js';
 const metadata = {
   name: '@engine9/interfaces/person_remote',
-  version: '1.0.0',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
   },

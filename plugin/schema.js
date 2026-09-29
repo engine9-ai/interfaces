@@ -7,7 +7,6 @@ export const tables = [
       name: 'string',
       nickname: 'string',
       table_prefix: 'string',
-      deployed_version: 'string',
       remote_plugin_id: 'string',
       schema: 'json', // Not all plugins need to support file based schemas, like per-account custom fields
       transforms: 'json', // Not all plugins need to support file based transforms, like per-account custom fields
@@ -25,7 +24,6 @@ export const tables = [
       id: 'id_uuid',
       plugin_id: 'id_uuid', // can't be null, must have a value
       path: 'string',
-      deployed_version: 'string',
       created_at: 'created_at',
       modified_at: 'modified_at'
     },

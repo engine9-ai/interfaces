@@ -6,7 +6,6 @@ import upsertPersonPhone from './transforms/inbound/upsert_tables.js';
 import appendPhoneHash from './transforms/outbound/appendPhoneHash.js';
 const metadata = {
   name: '@engine9/interfaces/person_phone',
-  version: '1.0.1',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
   },

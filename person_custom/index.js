@@ -4,7 +4,6 @@ const metadata = {
   name: 'Custom Fields',
   prefix: 'person_custom',
   unique: false,
-  version: '1.0.0',
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
   },

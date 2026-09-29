@@ -7,7 +7,6 @@ import appendPhoneHash from './transforms/outbound/appendPhoneHash.js';
 
 const metadata = {
   name: '@engine9/interfaces/person_hash',
-  version: '1.0.0',
   unique: true,
   dependencies: {
     '@engine9/interfaces/person': '>=1.0.0'
