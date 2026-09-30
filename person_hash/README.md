@@ -4,7 +4,7 @@
 
 It is **not** part of the standard stack. It ships in `@engine9/interfaces/stacks/limited-pii`, or install it explicitly (once per account — `unique: true`). Once installed, core weaves its transforms into the inbound people pipeline automatically.
 
-Server `settings.exclude_pii` (nearest account in child-first lineage) makes `installStandard()` default to limited-pii and refuses `@engine9/interfaces/stacks/standard`, `person_email`, `person_phone`, and `person_address` even if those plugins are already installed. That does **not** uninstall leftover plaintext tables.
+Warehouse plugin setting `exclude_pii` on `@engine9/interfaces/utilities/limited-pii` makes `installDefaultPlugins()` prefer the limited-pii stack over `default_stack` and refuses `@engine9/interfaces/stacks/standard`, `person_email`, `person_phone`, and `person_address` even if those plugins are already installed. That does **not** uninstall leftover plaintext tables. Install the utility plugin on demand; it is not part of the limited-pii stack.
 
 It does **not** depend on `person_email` or `person_phone`. Those plugins may be installed alongside it; this interface never writes to their tables.
 
@@ -13,7 +13,7 @@ It does **not** depend on `person_email` or `person_phone`. Those plugins may be
 ```javascript
 await pluginWorker.install({ path: '@engine9/interfaces/person_hash' });
 // or the PII-free stack
-await pluginWorker.installStandard({ path: '@engine9/interfaces/stacks/limited-pii' });
+await pluginWorker.installDefaultPlugins({ path: '@engine9/interfaces/stacks/limited-pii' });
 ```
 
 A second install of the same path reuses the existing plugin row.
@@ -67,4 +67,4 @@ The `upsertPersonHash` transform writes only hash columns to `person_hash_email`
 
 The plugin also exports `search.emailHashes` / `search.phoneHashes` for the plugin search tree (`@engine9/interfaces/person_hash:search:emailHashes`).
 
-Default warehouse export includes the hash tables (export skips them when they do not exist). When `settings.exclude_pii` is set and `tables` is not explicit, `person_email` / `person_phone` / `person_address` are omitted from that default list.
+Default warehouse export includes the hash tables (export skips them when they do not exist). When utilities/limited-pii `exclude_pii` is set and `tables` is not explicit, `person_email` / `person_phone` / `person_address` are omitted from that default list.
