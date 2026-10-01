@@ -3,6 +3,7 @@ import search from './search.js';
 import metrics from './metrics.js';
 import segments from './segments.js';
 import upsert from './transforms/inbound/upsert_tables.js';
+import attribute from './transforms/attribute.js';
 import appendTransactionSummary from './transforms/appendTransactionSummary.js';
 const metadata = {
   name: '@engine9/interfaces/transaction/core',
@@ -12,6 +13,7 @@ const metadata = {
 };
 export const transforms = {
   upsert,
+  attribute,
   appendTransactionSummary
 };
 export { metadata };
